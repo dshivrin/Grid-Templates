@@ -1,0 +1,10 @@
+.canvas-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding-top: 8%; */
+}
+
+canvas{
+    border: 1px solid black;
+}
