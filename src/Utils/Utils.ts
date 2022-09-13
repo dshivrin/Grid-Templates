@@ -1,5 +1,7 @@
 import { jsPDF } from "jspdf";
 import print from "print-js";
+import { drawCopperplateGrid } from "./Copperplate";
+import consts from "../Utils/Consts.json";
 
 export const setLineSmoothness = (ctxRef: any) => {
   ctxRef.lineCap = "round";
@@ -27,12 +29,10 @@ export const clearCanvas = (ctxRef: any, width: number, height: number) => {
   //clear bg / fill etc
 };
 
-export const PrintCanvas = (
-  width: number,
-  height: number,
-  scaleDown: number
-) => {
-  const printableCanvasElement = prepareForPrinting(width, height, scaleDown);
+export const PrintCanvas = (pageSize: string) => {
+  const page = consts.pageSizes.find((p) => p.size === pageSize);
+  if(!page) return;
+  const printableCanvasElement = prepareForPrinting(page.width, page.height, 1);
   print(printableCanvasElement.toDataURL(), "image");
 };
 
@@ -50,7 +50,9 @@ const prepareForPrinting = (
 
   const pctx = printableCanvasElement.getContext("2d");
   clearCanvas(pctx, width, height); //?
-  // drawCopperplateGrid(0, 111.8, 55, false, pctx);// todo: move to copperplate methods file
+  //drawCopperplateGrid(0, 111.8, 55, false, pctx);// todo: move to copperplate methods file
+  // drawCopperplateGrid(ctxRef, 0, mm, 55, width, height, scaleDown, true);
+  drawCopperplateGrid(pctx, 0, 111.8, 55, width, height, scaleDown, true); // todo: move to copperplate methods file
   return printableCanvasElement;
 };
 
@@ -92,10 +94,10 @@ export const SaveAsPDF = (args: any) => {};
 //   pdf.save("download.pdf");
 // };
 
-  //printing directly: https://printjs.crabbly.com/
-  //to be depricated
-  // const Print = () => {
-  //   const canvasId = prepareForPrinting();
-  //   //print('', "html");
-  // };
-  //TODO: move to utils
+//printing directly: https://printjs.crabbly.com/
+//to be depricated
+// const Print = () => {
+//   const canvasId = prepareForPrinting();
+//   //print('', "html");
+// };
+//TODO: move to utils

@@ -2,10 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { CovnertToPDF, PrintCanvas } from "../../Utils/Utils";
 import "./Canvas.css";
 import { drawCopperplateGrid } from "../../Utils/Copperplate";
+import consts from "../../Utils/Consts.json";
 
-//TODO: add form validation for the angle
-//TODO: REDRAW TECHNICHE: try repainting the lines in the background color instead of erasing the whole canvas
+/*
+  TODO:
+  1.add form validation for the angle
+  2.REDRAW TECHNICHE: try repainting the lines in the background color instead of erasing the whole canvas
+  3.Add landscape / portrait modes
+*/
 
+//https://www.instantprint.co.uk/printspiration/print-design-tips/size-guide
 //print is usually 300 dpi
 //A4 page size - 3508 x 2480 px (297 x 210 mm)
 //A5 page size - 2480 x 1748 px (210 x 148 mm)
@@ -21,6 +27,8 @@ const Canvas = (props: any) => {
   const lineWidth = mm; //default line width
   const lineheight = mm * 4; //default line height
 
+  const pageSizes = consts.pageSizes;
+
   const [includeVerticaLines, setIncludeVerticaLines] = useState(true);
   const [verticalAngle, setVerticalAngle] = useState(55);
   const [verticalSpacing, setVerticalSpacing] = useState(5); //default is 5 cm
@@ -28,8 +36,15 @@ const Canvas = (props: any) => {
   //canvas
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
 
+  const onPageSizeChanged = () => {
+    /*
+      1.update display canvas using the scaleDown 
+      2.clear and redraw printable canvas
+    */
+  };
+
   useEffect(() => {
-    const ctxRef = displayCanvasElement.current!.getContext("2d"); // some wierd useRef issue with useEffect.. 
+    const ctxRef = displayCanvasElement.current!.getContext("2d"); // some wierd useRef issue with useEffect..
     drawCopperplateGrid(ctxRef, 0, mm, 55, width, height, scaleDown, true);
   }, [drawCopperplateGrid]);
 
@@ -42,6 +57,18 @@ const Canvas = (props: any) => {
         ref={displayCanvasElement}
       ></canvas>
       <div className="controls-wrapper">
+        <div className="page-size-selector">
+          <label>Page Size</label>
+          <select onChange={onPageSizeChanged}>
+            {pageSizes.map((p) => {
+              return (
+                <option key={`optionKey:${p.size}`} value={p.size}>
+                  {p.size}
+                </option>
+              );
+            })}
+          </select>
+        </div>
         <div className="vertical-controls">
           <label>Vertical</label>
           <div>
@@ -97,14 +124,11 @@ const Canvas = (props: any) => {
             </div>
           </div>
         </div>
-        <div className="page-size">
-          {/* todo: select box with predefined options  */}
-        </div>
         <div className="footer">
           <button
             type="button"
             onClick={() => {
-              PrintCanvas(width, height, scaleDown);
+              PrintCanvas("A4");
             }}
           >
             Print
