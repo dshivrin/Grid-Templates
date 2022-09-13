@@ -1,4 +1,5 @@
 import { clearCanvas, drawLine, setLineSmoothness } from "./Utils";
+const cm = 11.18;
 
 export const drawCopperplateGrid = (
   ctxRef: any,
@@ -14,8 +15,17 @@ export const drawCopperplateGrid = (
   //   if (!ctxRef) ctxRef = displayCanvasElement.current.getContext("2d");
   clearCanvas(ctxRef, width, height);
   drawCopperplateVerticalLines(x1, y1, angle, height, width, scaleDown, ctxRef);
+
   if (drawHorizontal)
-    drawCopperplateHorizontalLines(x1, y1, height, width, scaleDown, ctxRef);
+    drawCopperplateHorizontalLines(
+      ctxRef,
+      x1,
+      y1,
+      height,
+      width,
+      scaleDown,
+      cm * 3.5
+    );
 };
 
 /*
@@ -58,10 +68,19 @@ const drawCopperplateVerticalLines = (
 };
 
 const drawCopperplateHorizontalLines = (
+  ctxRef: any,
   x1: number,
   y1: number,
   height: number,
   width: number,
   scaleDown: number,
-  ctxRef: any
-) => {};
+  interval: number
+) => {
+  setLineSmoothness(ctxRef);
+
+//TODO: landscape, this is for portrait mode
+  while (y1 < height) {
+    drawLine(ctxRef, x1, width, y1, y1);
+    y1 += interval;
+  }
+};

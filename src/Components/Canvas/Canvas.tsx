@@ -1,14 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import Controls from "../Controls/Controls";
-import {
-  clearCanvas,
-  CovnertToPDF,
-  drawLine,
-  PrintCanvas,
-  setLineSmoothness,
-} from "../../Utils/Utils";
+import { useEffect, useRef, useState } from "react";
+import { CovnertToPDF, PrintCanvas } from "../../Utils/Utils";
 import "./Canvas.css";
 import { drawCopperplateGrid } from "../../Utils/Copperplate";
+
+//TODO: add form validation for the angle
+//TODO: REDRAW TECHNICHE: try repainting the lines in the background color instead of erasing the whole canvas
 
 //print is usually 300 dpi
 //A4 page size - 3508 x 2480 px (297 x 210 mm)
@@ -33,11 +29,10 @@ const Canvas = (props: any) => {
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const ctxRef = displayCanvasElement.current!.getContext("2d");// 
+    const ctxRef = displayCanvasElement.current!.getContext("2d"); // some wierd useRef issue with useEffect.. 
     drawCopperplateGrid(ctxRef, 0, mm, 55, width, height, scaleDown, true);
   }, [drawCopperplateGrid]);
 
-  //TODO: add form validation for the angle
   return (
     <div className="canvas-container">
       <canvas
