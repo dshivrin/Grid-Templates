@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import print from "print-js";
 import "./Canvas.css";
 
 import Controls from "../Controls/Controls";
+import jsPDF from "jspdf";
 
 //print is usually 300 dpi
 //A4 page size - 3508 x 2480 px (297 x 210 mm)
@@ -19,8 +20,11 @@ const Canvas = (props: any) => {
   const lineWidth = mm; //default line width
   const lineheight = mm * 4; //default line height
 
+  const [includeVerticaLines, setIncludeVerticaLines] = useState(true);
+  const [verticalAngle, setVerticalAngle] = useState(55);
+  const [verticalSpacing, setVerticalSpacing] = useState(5); //default is 5 cm
+
   //canvas
-  //TODO: consider a second canvas for the printing output, and leave the current one for preview
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
 
   let ctxRef;
@@ -108,7 +112,7 @@ const Canvas = (props: any) => {
   const drawCopperplateHorizontalLines = (x1: number, y1: number) => {};
 
   //upscaling a large canvas, drawing and passing on for prinring
-  //TODO: requires some size adjustments 
+  //TODO: requires some size adjustments
   const prepareForPrinting = () => {
     const printableCanvasElement = document.createElement("canvas");
     printableCanvasElement.width = width * scaleDown;
@@ -116,11 +120,26 @@ const Canvas = (props: any) => {
     printableCanvasElement.id = "printable-canvas";
 
     const pctx = printableCanvasElement.getContext("2d");
+    clearCanvas(pctx); //?
     drawCopperplateGrid(0, mm, 55, false, pctx);
-    return printableCanvasElement; 
+    return printableCanvasElement;
   };
 
-
+  const CovnertToPDF = () => {
+    let pdf: jsPDF;
+    //set the orientation
+    if (width > height) {
+      pdf = new jsPDF("l", "px", [width, height]); //landscape
+    } else {
+      pdf = new jsPDF("p", "px", [height, width]); //portrait
+    }
+    //then we get the dimensions from the 'pdf' file itself
+    const printableCanvasElement = prepareForPrinting();
+    const cw = pdf.internal.pageSize.getWidth();
+    const ch = pdf.internal.pageSize.getHeight();
+    pdf.addImage(printableCanvasElement.toDataURL(), "PNG", 0, 0, cw, ch);
+    pdf.save("download.pdf");
+  };
 
   //printing directly: https://printjs.crabbly.com/
   //to be depricated
@@ -129,14 +148,32 @@ const Canvas = (props: any) => {
     //print('', "html");
   };
 
-  const PrintCanvas = () =>{
+  const PrintCanvas = () => {
     const printableCanvasElement = prepareForPrinting();
-    print(printableCanvasElement.toDataURL(), 'image')
-  }
+    print(printableCanvasElement.toDataURL(), "image");
+  };
 
   useEffect(() => {
     drawCopperplateGrid(0, mm, 55, true, null);
   }, [drawCopperplateGrid]);
+
+  /*
+  controls props:
+  print
+  save pdf
+  onchange: 
+  */
+
+  const options = {
+    includeVerticaLines,
+    verticalAngle,
+    verticalSpacing,
+    setIncludeVerticaLines,
+    setVerticalAngle,
+    setVerticalSpacing,
+    PrintCanvas,
+    CovnertToPDF,
+  };
 
   return (
     <div className="canvas-container">
@@ -146,7 +183,68 @@ const Canvas = (props: any) => {
         height={height}
         ref={displayCanvasElement}
       ></canvas>
-      <Controls/>
+      <div className="controls-wrapper">
+        <div className="vertical-controls">
+          <label>Vertical</label>
+          <div>
+            <label>Include Vertical lines? </label>
+            <input
+              type="checkbox"
+              id="incluideVertical"
+              checked={includeVerticaLines}
+              onChange={() => {setIncludeVerticaLines(!includeVerticaLines)}}
+            />
+          </div>
+          <div>
+            <label>Vertical spacing in cm:</label>
+            <input
+              type="number"
+              id="vertical-spacing"
+              min="1"
+              max="10"
+              value={verticalSpacing}
+              onChange={(event) => {setVerticalSpacing(+event.target.value)}}
+              disabled={!includeVerticaLines}
+            />
+          </div>
+          <div>
+            <label>Vertical angle: </label>
+            <input
+              type="number"
+              id="angle"
+              min="50"
+              max="60"
+              value={verticalAngle}
+              onChange={(event) => {setVerticalAngle(+event.target.value)}}
+              disabled={!includeVerticaLines}
+            />
+          </div>
+        </div>
+        <div className="horizontal-controls">
+          <label>Horizontal</label>
+          <div>
+            <div>
+              <label>Include Vertical lines? </label>
+              <input type="checkbox" id="incluideHorizontal" value="true" />
+            </div>
+            <div>
+              <label>Horizontal spacing :</label>
+              <input type="number" id="horizontal-spacing" min="1" max="10" />
+            </div>
+          </div>
+        </div>
+        <div className="page-size">
+          {/* todo: select box with predefined options  */}
+        </div>
+        <div className="footer">
+          <button type="button" onClick={PrintCanvas}>
+            Print
+          </button>
+          <button type="button" onClick={CovnertToPDF}>
+            Download
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
