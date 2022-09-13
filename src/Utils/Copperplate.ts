@@ -24,7 +24,7 @@ export const drawCopperplateGrid = (
       height,
       width,
       scaleDown,
-      cm * 3.5
+      cm * scaleDown
     );
 };
 
