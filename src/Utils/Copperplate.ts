@@ -8,13 +8,22 @@ export const drawCopperplateGrid = (
   angle: number,
   width: number,
   height: number,
+  lineWidth: number,
   scaleDown: number,
   drawHorizontal: boolean = false
 ) => {
-  //   if (!displayCanvasElement.current) return;
-  //   if (!ctxRef) ctxRef = displayCanvasElement.current.getContext("2d");
+
   clearCanvas(ctxRef, width, height);
-  drawCopperplateVerticalLines(x1, y1, angle, height, width, scaleDown, ctxRef);
+  drawCopperplateVerticalLines(
+    x1,
+    y1,
+    angle,
+    lineWidth,
+    height,
+    width,
+    scaleDown,
+    ctxRef
+  );
 
   if (drawHorizontal)
     drawCopperplateHorizontalLines(
@@ -23,8 +32,9 @@ export const drawCopperplateGrid = (
       y1,
       height,
       width,
+      lineWidth,
       scaleDown,
-      cm * scaleDown / 4
+      (cm * scaleDown) / 4
     );
 };
 
@@ -33,11 +43,12 @@ export const drawCopperplateGrid = (
     So basic trigononetry will give me hypotenuse length given the angle and the opposite.
     Angle is in degrees only.
 */
-//todo: make standard 6mm, 5mm etc to work. 
+//todo: make standard 6mm, 5mm etc to work.
 const drawCopperplateVerticalLines = (
   x1: number,
   y1: number,
   angle: number,
+  lineWidth: number,
   height: number,
   width: number,
   scaleDown: number,
@@ -52,9 +63,9 @@ const drawCopperplateVerticalLines = (
     x2 = x1 + Math.cos((Math.PI * 90) / angle) * (width + y1);
     y2 = y1 + Math.sin((Math.PI * 90) / angle) * (width + y1);
 
-    drawLine(ctxRef, x1, x2, y1, y2);
+    drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
 
-    y1 += 8 * scaleDown;// improve this!
+    y1 += 8 * scaleDown; // improve this!
   }
 
   //then continue on the X axis
@@ -62,9 +73,9 @@ const drawCopperplateVerticalLines = (
     x2 = x1 + Math.cos((Math.PI * 90) / angle) * (height + y1);
     y2 = y1 + Math.sin((Math.PI * 90) / angle) * (height + y1);
 
-    drawLine(ctxRef, x1, x2, y1, y2);
+    drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
 
-    x1 += 4 * scaleDown;//improve this!
+    x1 += 4 * scaleDown; //improve this!
   }
 };
 
@@ -74,14 +85,15 @@ const drawCopperplateHorizontalLines = (
   y1: number,
   height: number,
   width: number,
+  lineWidth: number,
   scaleDown: number,
   interval: number
 ) => {
   setLineSmoothness(ctxRef);
 
-//TODO: landscape, this is for portrait mode
+  //TODO: landscape, this is for portrait mode
   while (y1 < height) {
-    drawLine(ctxRef, x1, width, y1, y1);
+    drawLine(ctxRef, x1, width, y1, y1, lineWidth);
     y1 += interval;
   }
 };

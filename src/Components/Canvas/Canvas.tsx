@@ -24,7 +24,7 @@ const Canvas = (props: any) => {
   const width = 2480 / scaleDown;
   const height = 3508 / scaleDown;
   const mm = 111.8 / scaleDown;
-  const lineWidth = mm; //default line width
+  //const lineWidth = mm; //default line width
   const lineheight = mm * 4; //default line height
 
   const pageSizes = consts.pageSizes;
@@ -32,6 +32,7 @@ const Canvas = (props: any) => {
   const [includeVerticaLines, setIncludeVerticaLines] = useState(true);
   const [verticalAngle, setVerticalAngle] = useState(55);
   const [verticalSpacing, setVerticalSpacing] = useState(5); //default is 5 cm
+  const [lineWidth, setLineWidth] = useState(1); //default is 1 px
 
   //canvas
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
@@ -45,8 +46,18 @@ const Canvas = (props: any) => {
 
   useEffect(() => {
     const ctxRef = displayCanvasElement.current!.getContext("2d"); // some wierd useRef issue with useEffect..
-    drawCopperplateGrid(ctxRef, 0, mm, 55, width, height, scaleDown, true);
-  }, [drawCopperplateGrid]);
+    drawCopperplateGrid(
+      ctxRef,
+      0,
+      mm,
+      55,
+      width,
+      height,
+      lineWidth,
+      scaleDown,
+      true
+    );
+  }, [drawCopperplateGrid, lineWidth, width, height]);
 
   return (
     <div className="main-container ">
@@ -59,97 +70,119 @@ const Canvas = (props: any) => {
         ></canvas>
       </div>
       <div className="controls-container">
-      <div className="inner-container">
-      
-        <label>Page</label>
-        <div className="section page-size-selector">
-          <label>Page Size: </label>
-          <select onChange={onPageSizeChanged}>
-            {pageSizes.map((p) => {
-              return (
-                <option key={`optionKey:${p.size}`} value={p.size}>
-                  {p.size}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <label>Vertical</label>
-        <div className="section vertical-controls">
-          <div>
-            <label>Include Vertical lines? </label>
-            <input
-              type="checkbox"
-              id="incluideVertical"
-              checked={includeVerticaLines}
-              onChange={() => {
-                setIncludeVerticaLines(!includeVerticaLines);
-              }}
-            />
+        <div className="inner-container">
+          <label>Page</label>
+          <div className="section page-size-selector">
+            <div>
+              <label>Page Size: </label>
+              <select onChange={onPageSizeChanged}>
+                {pageSizes.map((p) => {
+                  return (
+                    <option key={`optionKey:${p.size}`} value={p.size}>
+                      {p.size}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div>
+              <label>Line Width: </label>
+              <input
+                type="number"
+                min="1"
+                max="5"
+                value={lineWidth}
+                onChange={(event) => {
+                  setLineWidth(+event.target.value);
+                }}
+              />{" "}
+              px
+            </div>
           </div>
-          <div>
-            <label>Vertical spacing in cm:</label>
-            <input
-              type="number"
-              id="vertical-spacing"
-              min="1"
-              max="10"
-              value={verticalSpacing}
-              onChange={(event) => {
-                setVerticalSpacing(+event.target.value);
-              }}
-              disabled={!includeVerticaLines}
-            />
-          </div>
-          <div>
-            <label>Vertical angle: </label>
-            <input
-              type="number"
-              id="angle"
-              min="50"
-              max="60"
-              value={verticalAngle}
-              onChange={(event) => {
-                setVerticalAngle(+event.target.value);
-              }}
-              disabled={!includeVerticaLines}
-            />
-          </div>
-        </div>
-        <label>Horizontal</label>
-        <div className="section horizontal-controls">
-          <div>
+          <label>Vertical</label>
+          <div className="section vertical-controls">
             <div>
               <label>Include Vertical lines? </label>
-              <input type="checkbox" id="incluideHorizontal" value="true" />
+              <input
+                type="checkbox"
+                id="incluideVertical"
+                checked={includeVerticaLines}
+                onChange={() => {
+                  setIncludeVerticaLines(!includeVerticaLines);
+                }}
+              />
             </div>
             <div>
-              <label>Horizontal spacing :</label>
-              <input type="number" id="horizontal-spacing" min="1" max="10" />
+              <label>Vertical spacing:</label>
+              <input
+                type="number"
+                id="vertical-spacing"
+                min="1"
+                max="10"
+                value={verticalSpacing}
+                onChange={(event) => {
+                  setVerticalSpacing(+event.target.value);
+                }}
+                disabled={!includeVerticaLines}
+              />{" "}
+              cm
+            </div>
+            <div>
+              <label>Vertical angle: </label>
+              <input
+                type="number"
+                id="angle"
+                min="50"
+                max="60"
+                value={verticalAngle}
+                onChange={(event) => {
+                  setVerticalAngle(+event.target.value);
+                }}
+                disabled={!includeVerticaLines}
+              />{" "}
+              °
             </div>
           </div>
+          <label>Horizontal</label>
+          <div className="section horizontal-controls">
+            <div>
+              <div>
+                <label>Include Vertical lines? </label>
+                <input type="checkbox" id="incluideHorizontal" value="true" />
+              </div>
+              <div>
+                <label>Horizontal spacing :</label>
+                <input
+                  type="number"
+                  id="horizontal-spacing"
+                  min="1"
+                  max="10"
+                />{" "}
+                cm
+              </div>
+            </div>
+          </div>
+          <div className="footer">
+            <button
+              type="button"
+              className="button-46 print"
+              onClick={() => {
+                PrintCanvas("A4", lineWidth);
+              }}
+            >
+              Print
+            </button>
+            <button
+              type="button"
+              className="button-46 download"
+              onClick={() => {
+                CovnertToPDF("A4", lineWidth);
+              }}
+            >
+              Download
+            </button>
+          </div>
         </div>
-        <div className="footer">
-          <button
-            type="button"
-            className="button-46 print"
-            onClick={() => {
-              PrintCanvas("A4");
-            }}
-          >
-            Print
-          </button>
-          <button
-            type="button"
-            className="button-46 download"
-            onClick={() => {
-              CovnertToPDF("A4");
-            }}
-          >
-            Download
-          </button>
-        </div>
-      </div>
       </div>
     </div>
   );

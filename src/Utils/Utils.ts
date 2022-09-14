@@ -15,9 +15,10 @@ export const drawLine = (
   x1: number,
   x2: number,
   y1: number,
-  y2: number
+  y2: number, 
+  lineWidth: number
 ) => {
-  ctxRef.lineWidth = 1;//todo: param
+  ctxRef.lineWidth = lineWidth;
   ctxRef.beginPath();
   ctxRef.moveTo(x2, y2);
   ctxRef.lineTo(x1, y1);
@@ -30,10 +31,10 @@ export const clearCanvas = (ctxRef: any, width: number, height: number) => {
   //clear bg / fill etc
 };
 
-export const PrintCanvas = (pageSize: string) => {
+export const PrintCanvas = (pageSize: string, lineWidth:number) => {
   const page = consts.pageSizes.find((p) => p.size === pageSize);
   if(!page) return;
-  const printableCanvas = prepareForPrinting(page.width, page.height, 1);
+  const printableCanvas = prepareForPrinting(page.width, page.height,lineWidth, 1);
   print(printableCanvas.toDataURL(), "image");
 };
 
@@ -41,6 +42,7 @@ export const PrintCanvas = (pageSize: string) => {
 const prepareForPrinting = (
   width: number,
   height: number,
+  lineWidth: number,
   scale: number
 ) => {
   const printableCanvas = document.createElement("canvas");
@@ -50,11 +52,11 @@ const prepareForPrinting = (
 
   const pctx = printableCanvas.getContext("2d");
   //todo: calc the scale by dividing the display widht and heigth and printable
-  drawCopperplateGrid(pctx, 0, 111.8, 55, width, height, 35, true);
+  drawCopperplateGrid(pctx, 0, 111.8, 55, width, height,lineWidth, 35, true);
   return printableCanvas;
 };
 
-export const CovnertToPDF = (pageSize: string) => {
+export const CovnertToPDF = (pageSize: string, lineWidth:number) => {
   const page = consts.pageSizes.find((p) => p.size === pageSize);
   if(!page) return;
   let pdf: jsPDF;
@@ -65,7 +67,7 @@ export const CovnertToPDF = (pageSize: string) => {
     pdf = new jsPDF("p", "px", [page.height, page.width]); //portrait
   }
   //then we get the dimensions from the 'pdf' file itself
-  const printableCanvas = prepareForPrinting(page.width, page.height, 1);
+  const printableCanvas = prepareForPrinting(page.width, page.height,lineWidth, 1);
   const cw = pdf.internal.pageSize.getWidth();
   const ch = pdf.internal.pageSize.getHeight();
   pdf.addImage(printableCanvas.toDataURL(), "PNG", 0, 0, cw, ch);
