@@ -6,8 +6,7 @@ import consts from "../../Utils/Consts.json";
 
 /*
   TODO:
-  1.add form validation for the angle
-  2.REDRAW TECHNICHE: try repainting the lines in the background color instead of erasing the whole canvas
+  1.add form validation for all inputs
   3.Add landscape / portrait modes
 */
 
@@ -25,39 +24,54 @@ const Canvas = (props: any) => {
   const height = 3508 / scaleDown;
   const mm = 111.8 / scaleDown;
   //const lineWidth = mm; //default line width
-  const lineheight = mm * 4; //default line height
+  //const lineheight = mm * 4; //default line height
 
   const pageSizes = consts.pageSizes;
 
-  const [includeVerticaLines, setIncludeVerticaLines] = useState(true);
+  const [includeVerticalLines, setincludeVerticalLines] = useState(true);
   const [verticalAngle, setVerticalAngle] = useState(55);
   const [verticalSpacing, setVerticalSpacing] = useState(5); //default is 5 cm
+  const [horizontalSpacing, setHorizontalSpacing] = useState(5); //default is 5 cm
   const [lineWidth, setLineWidth] = useState(1); //default is 1 px
+  const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
+  const [canvasWidth, setCanvasWidth] = useState(0); 
+  const [canvasHeight, setCanvasHeight] = useState(0); 
 
   //canvas
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
 
-  const onPageSizeChanged = () => {
-    /*
-      1.update display canvas using the scaleDown 
-      2.clear and redraw printable canvas
-    */
+  const onPageSizeChanged = (size: string) => {
+    const page = pageSizes.find((p) => p.size === size);
+    if(!page) return;
+
+    setCanvasWidth(page.width);
+    setCanvasHeight(page.height);
+    
   };
 
   useEffect(() => {
-    const ctxRef = displayCanvasElement.current!.getContext("2d"); // some wierd useRef issue with useEffect..
+    const ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
     drawCopperplateGrid(
       ctxRef,
       0,
       mm,
-      55,
+      verticalAngle,
       width,
       height,
       lineWidth,
       scaleDown,
-      true
+      includeHorizontalLines,
+      includeVerticalLines
     );
-  }, [drawCopperplateGrid, lineWidth, width, height]);
+  }, [
+    width,
+    height,
+    lineWidth,
+    verticalAngle,
+    verticalSpacing,
+    includeHorizontalLines,
+    includeVerticalLines,
+  ]);
 
   return (
     <div className="main-container ">
@@ -75,7 +89,11 @@ const Canvas = (props: any) => {
           <div className="section page-size-selector">
             <div>
               <label>Page Size: </label>
-              <select onChange={onPageSizeChanged}>
+              <select
+                onChange={(event) => {
+                  onPageSizeChanged(event.target.value);
+                }}
+              >
                 {pageSizes.map((p) => {
                   return (
                     <option key={`optionKey:${p.size}`} value={p.size}>
@@ -106,9 +124,9 @@ const Canvas = (props: any) => {
               <input
                 type="checkbox"
                 id="incluideVertical"
-                checked={includeVerticaLines}
+                checked={includeVerticalLines}
                 onChange={() => {
-                  setIncludeVerticaLines(!includeVerticaLines);
+                  setincludeVerticalLines(!includeVerticalLines);
                 }}
               />
             </div>
@@ -123,7 +141,7 @@ const Canvas = (props: any) => {
                 onChange={(event) => {
                   setVerticalSpacing(+event.target.value);
                 }}
-                disabled={!includeVerticaLines}
+                disabled={!includeVerticalLines}
               />{" "}
               cm
             </div>
@@ -138,7 +156,7 @@ const Canvas = (props: any) => {
                 onChange={(event) => {
                   setVerticalAngle(+event.target.value);
                 }}
-                disabled={!includeVerticaLines}
+                disabled={!includeVerticalLines}
               />{" "}
               °
             </div>
@@ -147,16 +165,28 @@ const Canvas = (props: any) => {
           <div className="section horizontal-controls">
             <div>
               <div>
-                <label>Include Vertical lines? </label>
-                <input type="checkbox" id="incluideHorizontal" value="true" />
+                <label>Include Horizontal lines? </label>
+                <input
+                  type="checkbox"
+                  id="incluideHorizontal"
+                  checked={includeHorizontalLines}
+                  onChange={() =>
+                    setIncludeHorizontalLines(!includeHorizontalLines)
+                  }
+                />
               </div>
               <div>
-                <label>Horizontal spacing :</label>
+                <label>Horizontal spacing: </label>
                 <input
                   type="number"
                   id="horizontal-spacing"
                   min="1"
                   max="10"
+                  value={horizontalSpacing}
+                  disabled={!includeHorizontalLines}
+                  onChange={(event) => {
+                    setHorizontalSpacing(+event.target.value);
+                  }}
                 />{" "}
                 cm
               </div>
@@ -167,7 +197,12 @@ const Canvas = (props: any) => {
               type="button"
               className="button-46 print"
               onClick={() => {
-                PrintCanvas("A4", lineWidth);
+                PrintCanvas(
+                  "A4",
+                  lineWidth,
+                  includeHorizontalLines,
+                  includeVerticalLines
+                );
               }}
             >
               Print
@@ -176,7 +211,12 @@ const Canvas = (props: any) => {
               type="button"
               className="button-46 download"
               onClick={() => {
-                CovnertToPDF("A4", lineWidth);
+                CovnertToPDF(
+                  "A4",
+                  lineWidth,
+                  includeHorizontalLines,
+                  includeVerticalLines
+                );
               }}
             >
               Download

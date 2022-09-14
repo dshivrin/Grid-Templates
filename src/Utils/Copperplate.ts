@@ -10,20 +10,21 @@ export const drawCopperplateGrid = (
   height: number,
   lineWidth: number,
   scaleDown: number,
-  drawHorizontal: boolean = false
+  drawHorizontal: boolean = false,
+  drawVertical: boolean = true
 ) => {
-
   clearCanvas(ctxRef, width, height);
-  drawCopperplateVerticalLines(
-    x1,
-    y1,
-    angle,
-    lineWidth,
-    height,
-    width,
-    scaleDown,
-    ctxRef
-  );
+  if (drawVertical)
+    drawCopperplateVerticalLines(
+      x1,
+      y1,
+      angle,
+      lineWidth,
+      height,
+      width,
+      scaleDown,
+      ctxRef
+    );
 
   if (drawHorizontal)
     drawCopperplateHorizontalLines(
@@ -59,6 +60,7 @@ const drawCopperplateVerticalLines = (
   setLineSmoothness(ctxRef);
 
   //start drawing from the Y axis
+  //todo: address the issue on angle change
   while (y1 < height) {
     x2 = x1 + Math.cos((Math.PI * 90) / angle) * (width + y1);
     y2 = y1 + Math.sin((Math.PI * 90) / angle) * (width + y1);

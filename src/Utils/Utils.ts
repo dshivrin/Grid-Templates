@@ -1,7 +1,9 @@
 import { jsPDF } from "jspdf";
-import print from "print-js";
+import printJS from "print-js";
 import { drawCopperplateGrid } from "./Copperplate";
 import consts from "../Utils/Consts.json";
+
+const mm = consts.mm;
 
 export const setLineSmoothness = (ctxRef: any) => {
   ctxRef.lineCap = "round";
@@ -15,7 +17,7 @@ export const drawLine = (
   x1: number,
   x2: number,
   y1: number,
-  y2: number, 
+  y2: number,
   lineWidth: number
 ) => {
   ctxRef.lineWidth = lineWidth;
@@ -31,19 +33,42 @@ export const clearCanvas = (ctxRef: any, width: number, height: number) => {
   //clear bg / fill etc
 };
 
-export const PrintCanvas = (pageSize: string, lineWidth:number) => {
+//See docs https://printjs.crabbly.com/
+export const PrintCanvas = (
+  pageSize: string,
+  lineWidth: number,
+  drawHorizontal: boolean,
+  drawVertical: boolean
+) => {
   const page = consts.pageSizes.find((p) => p.size === pageSize);
-  if(!page) return;
-  const printableCanvas = prepareForPrinting(page.width, page.height,lineWidth, 1);
-  print(printableCanvas.toDataURL(), "image");
+  if (!page) return;
+  const printableCanvas = prepareForPrinting(
+    page.width,
+    page.height,
+    lineWidth,
+    1,
+    drawHorizontal,
+    drawVertical
+  );
+  // const printOptions = {
+  //   printable:printableCanvas.toDataURL(),
+  //   //type: 'image',
+  //   documentTitle: '',
+  //   header:''
+  // }
+  printJS(printableCanvas.toDataURL(), "image");
+  //printJS(printOptions);// coudn't remove the header for some reason, need to in
+
 };
 
-//todo: pass the grid method as well 
+//todo: pass the grid method as well
 const prepareForPrinting = (
   width: number,
   height: number,
   lineWidth: number,
-  scale: number
+  scale: number,
+  drawHorizontal: boolean,
+  drawVertical: boolean
 ) => {
   const printableCanvas = document.createElement("canvas");
   printableCanvas.width = width * scale;
@@ -52,13 +77,29 @@ const prepareForPrinting = (
 
   const pctx = printableCanvas.getContext("2d");
   //todo: calc the scale by dividing the display widht and heigth and printable
-  drawCopperplateGrid(pctx, 0, 111.8, 55, width, height,lineWidth, 35, true);
+  drawCopperplateGrid(
+    pctx,
+    0,
+    111.8,
+    55,
+    width,
+    height,
+    lineWidth,
+    35,
+    drawHorizontal,
+    drawVertical
+  );
   return printableCanvas;
 };
 
-export const CovnertToPDF = (pageSize: string, lineWidth:number) => {
+export const CovnertToPDF = (
+  pageSize: string,
+  lineWidth: number,
+  drawHorizontal: boolean,
+  drawVertical: boolean
+) => {
   const page = consts.pageSizes.find((p) => p.size === pageSize);
-  if(!page) return;
+  if (!page) return;
   let pdf: jsPDF;
   //set the orientation
   if (page.width > page.height) {
@@ -67,7 +108,14 @@ export const CovnertToPDF = (pageSize: string, lineWidth:number) => {
     pdf = new jsPDF("p", "px", [page.height, page.width]); //portrait
   }
   //then we get the dimensions from the 'pdf' file itself
-  const printableCanvas = prepareForPrinting(page.width, page.height,lineWidth, 1);
+  const printableCanvas = prepareForPrinting(
+    page.width,
+    page.height,
+    lineWidth,
+    1,
+    drawHorizontal,
+    drawVertical
+  );
   const cw = pdf.internal.pageSize.getWidth();
   const ch = pdf.internal.pageSize.getHeight();
   pdf.addImage(printableCanvas.toDataURL(), "PNG", 0, 0, cw, ch);
