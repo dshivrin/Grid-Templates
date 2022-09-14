@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { CovnertToPDF, PrintCanvas } from "../../Utils/Utils";
-import "./Canvas.css";
 import { drawCopperplateGrid } from "../../Utils/Copperplate";
 import consts from "../../Utils/Consts.json";
+import landscapeLogo from "../../Media/landscape-mode.png";
+import portpaitLogo from "../../Media/portrait-mode.png";
+import "./Canvas.css";
 
 /*
   TODO:
@@ -17,39 +19,55 @@ import consts from "../../Utils/Consts.json";
 //A6 page size - 1748 x 1240 px (148 x 105 mm)
 //1 cm ~ 11.8px
 
-const Canvas = (props: any) => {
-  //starting with A4 size
+const Canvas = () => {
   const scaleDown = 5;
-  // const width = 2480 / scaleDown;
-  // const height = 3508 / scaleDown;
   const mm = 111.8 / scaleDown;
 
   const pageSizes = consts.pageSizes;
   const defaultPage = pageSizes.find((p) => p.isDefault || p.size === "A4");
 
   const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
-  const [displayCanvasWidth, setDisplayCanvasWidth] = useState(defaultPage!.width);
-  const [displayCanvasHeight, setDisplayCanvasHeight] = useState(defaultPage!.height);
-
+  const [pageOrientation, setPageOrientation] = useState("l");
+  const [displayCanvasWidth, setDisplayCanvasWidth] = useState(defaultPage!.width );
+  const [displayCanvasHeight, setDisplayCanvasHeight] = useState(defaultPage!.height  );
+    
   const [includeVerticalLines, setincludeVerticalLines] = useState(true);
   const [verticalAngle, setVerticalAngle] = useState(55);
-  const [verticalSpacing, setVerticalSpacing] = useState(5); //default is 5 cm
+  const [verticalSpacing, setVerticalSpacing] = useState(5); //default is 5 mm
 
   const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
-  const [horizontalSpacing, setHorizontalSpacing] = useState(5); //default is 5 cm
+  const [horizontalSpacing, setHorizontalSpacing] = useState(5); //default is 5 mm
 
   const [lineWidth, setLineWidth] = useState(1); //default is 1 px
 
-  //canvas
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
 
   const onPageSizeChanged = (size: string) => {
     const page = pageSizes.find((p) => p.size === size);
     if (!page) return;
 
-    setDisplayCanvasWidth(page.width);
-    setDisplayCanvasHeight(page.height);
+    if (pageOrientation == "p") {
+      setDisplayCanvasWidth(page.width);
+      setDisplayCanvasHeight(page.height);
+    } else {
+      setDisplayCanvasWidth(page.height);
+      setDisplayCanvasHeight(page.width);
+    }
+
     setSelectedPageSize(page.size);
+  };
+
+  const onOrientationChange = (mode: string) => {
+    setPageOrientation(mode);
+    const page = pageSizes.find((p) => p.size === selectedPageSize);
+    if (!page) return;
+    if (mode === "p") {
+      setDisplayCanvasWidth(page.width);
+      setDisplayCanvasHeight(page.height);
+    } else {
+      setDisplayCanvasWidth(page.height);
+      setDisplayCanvasHeight(page.width);
+    }
   };
 
   useEffect(() => {
@@ -74,10 +92,11 @@ const Canvas = (props: any) => {
     verticalSpacing,
     includeHorizontalLines,
     includeVerticalLines,
+    selectedPageSize,
   ]);
 
   return (
-    <div className="main-container ">
+    <div className="main-container">
       <div className="section canvas-container">
         <canvas
           id="canvas"
@@ -90,9 +109,10 @@ const Canvas = (props: any) => {
         <div className="inner-container">
           <label>Page</label>
           <div className="section page-size-selector">
-            <div>
+            <div className="page-size">
               <label>Page Size: </label>
-              <select value={selectedPageSize}
+              <select
+                value={selectedPageSize}
                 onChange={(event) => {
                   onPageSizeChanged(event.target.value);
                 }}
@@ -106,7 +126,7 @@ const Canvas = (props: any) => {
                 })}
               </select>
             </div>
-            <div>
+            <div className="line-width">
               <label>Line Width: </label>
               <input
                 type="number"
@@ -119,7 +139,29 @@ const Canvas = (props: any) => {
               />{" "}
               px
             </div>
+            <div className="page-orientation">
+              <label>
+                <input
+                  type="radio"
+                  name="orientation"
+                  value="p"
+                  defaultChecked
+                  onChange={(event) => onOrientationChange(event.target.value)}
+                />
+                <img src={portpaitLogo} alt="portrait mode" />
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="orientation"
+                  value="l"
+                  onChange={(event) => onOrientationChange(event.target.value)}
+                />
+                <img src={landscapeLogo} alt="portrait mode" />
+              </label>
+            </div>
           </div>
+
           <label>Vertical</label>
           <div className="section vertical-controls">
             <div>
@@ -159,7 +201,8 @@ const Canvas = (props: any) => {
                 onChange={(event) => {
                   setVerticalAngle(+event.target.value);
                 }}
-                disabled={!includeVerticalLines}
+                //disabled={!includeVerticalLines}
+                disabled={true}
               />{" "}
               °
             </div>
