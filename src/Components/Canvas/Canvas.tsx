@@ -7,7 +7,7 @@ import consts from "../../Utils/Consts.json";
 /*
   TODO:
   1.add form validation for all inputs
-  3.Add landscape / portrait modes
+  2.Add landscape / portrait modes
 */
 
 //https://www.instantprint.co.uk/printspiration/print-design-tips/size-guide
@@ -20,33 +20,36 @@ import consts from "../../Utils/Consts.json";
 const Canvas = (props: any) => {
   //starting with A4 size
   const scaleDown = 5;
-  const width = 2480 / scaleDown;
-  const height = 3508 / scaleDown;
+  // const width = 2480 / scaleDown;
+  // const height = 3508 / scaleDown;
   const mm = 111.8 / scaleDown;
-  //const lineWidth = mm; //default line width
-  //const lineheight = mm * 4; //default line height
 
   const pageSizes = consts.pageSizes;
+  const defaultPage = pageSizes.find((p) => p.isDefault || p.size === "A4");
+
+  const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
+  const [displayCanvasWidth, setDisplayCanvasWidth] = useState(defaultPage!.width);
+  const [displayCanvasHeight, setDisplayCanvasHeight] = useState(defaultPage!.height);
 
   const [includeVerticalLines, setincludeVerticalLines] = useState(true);
   const [verticalAngle, setVerticalAngle] = useState(55);
   const [verticalSpacing, setVerticalSpacing] = useState(5); //default is 5 cm
-  const [horizontalSpacing, setHorizontalSpacing] = useState(5); //default is 5 cm
-  const [lineWidth, setLineWidth] = useState(1); //default is 1 px
+
   const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
-  const [canvasWidth, setCanvasWidth] = useState(0); 
-  const [canvasHeight, setCanvasHeight] = useState(0); 
+  const [horizontalSpacing, setHorizontalSpacing] = useState(5); //default is 5 cm
+
+  const [lineWidth, setLineWidth] = useState(1); //default is 1 px
 
   //canvas
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
 
   const onPageSizeChanged = (size: string) => {
     const page = pageSizes.find((p) => p.size === size);
-    if(!page) return;
+    if (!page) return;
 
-    setCanvasWidth(page.width);
-    setCanvasHeight(page.height);
-    
+    setDisplayCanvasWidth(page.width);
+    setDisplayCanvasHeight(page.height);
+    setSelectedPageSize(page.size);
   };
 
   useEffect(() => {
@@ -56,16 +59,16 @@ const Canvas = (props: any) => {
       0,
       mm,
       verticalAngle,
-      width,
-      height,
+      displayCanvasWidth / scaleDown,
+      displayCanvasHeight / scaleDown,
       lineWidth,
       scaleDown,
       includeHorizontalLines,
       includeVerticalLines
     );
   }, [
-    width,
-    height,
+    displayCanvasWidth,
+    displayCanvasHeight,
     lineWidth,
     verticalAngle,
     verticalSpacing,
@@ -78,8 +81,8 @@ const Canvas = (props: any) => {
       <div className="section canvas-container">
         <canvas
           id="canvas"
-          width={width}
-          height={height}
+          width={displayCanvasWidth / scaleDown}
+          height={displayCanvasHeight / scaleDown}
           ref={displayCanvasElement}
         ></canvas>
       </div>
@@ -89,7 +92,7 @@ const Canvas = (props: any) => {
           <div className="section page-size-selector">
             <div>
               <label>Page Size: </label>
-              <select
+              <select value={selectedPageSize}
                 onChange={(event) => {
                   onPageSizeChanged(event.target.value);
                 }}
