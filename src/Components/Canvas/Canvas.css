@@ -1,10 +1,103 @@
-.canvas-container{
+/* 
+    Pallete:
+    #F5DA78 <= canvas container BG color
+    #E8B3A5 
+    #4C5859 <= dark font color or #303738
+    #B0DBA7 <= Controls BG color 
+    #8457EB <= buttons color
+*/
+
+
+.main-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    /* padding-top: 8%; */
+    /* justify-content: center; */
+    flex-direction: row-reverse;
+    height: 100vh;
 }
 
-canvas{
+.canvas-container {
+    /* flex: 2 1 auto; */
+    flex-basis:75%; 
+    display: flex;
+    justify-content: center;
+}
+
+
+.controls-container {
+    /* flex: 1 1 auto; */
+    flex-basis:25%; 
+    display: flex;
+    justify-content: start;
+    /* align-items: flex-start; */
+    flex-direction: column;
+    /* padding: 3%; */
+    /* text-align: left; */
+    align-items: stretch; 
+    height: 100%; /*<= this works only because the main-container's height is 100vh */
+}
+
+.inner-container{
+    padding: 50px;
+}
+
+.controls-container .section {
+    margin: 10px;
+    border: 1px solid #c0c0c0;
+    padding: 7px;
+    border-radius: 4px;
+}
+
+/* sizing the canvas with CSS is messing up the calculations */
+canvas {
     border: 1px solid black;
+
+}
+
+.footer{
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+}
+
+/* CSS */
+.button-46 {
+  align-items: center;
+  background-color: rgba(240, 240, 240, 0.26);
+  border: 1px solid #DFDFDF;
+  border-radius: 16px;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: flex;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  justify-content: center;
+  line-height: 28px;
+  max-width: 100%;
+  padding: 14px 22px;
+  text-decoration: none;
+  transition: all .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+}
+
+.button-46:active,
+.button-46:hover {
+  outline: 0;
+}
+
+.button-46:hover {
+  background-color: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.19);
+}
+
+@media (min-width: 768px) {
+  .button-46 {
+    font-size: 18px;
+    min-width: 150px;
+    padding: 14px 16px;
+  }
 }

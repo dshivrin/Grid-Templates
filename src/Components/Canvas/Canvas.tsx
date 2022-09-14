@@ -49,16 +49,21 @@ const Canvas = (props: any) => {
   }, [drawCopperplateGrid]);
 
   return (
-    <div className="canvas-container">
-      <canvas
-        id="canvas"
-        width={width}
-        height={height}
-        ref={displayCanvasElement}
-      ></canvas>
-      <div className="controls-wrapper">
-        <div className="page-size-selector">
-          <label>Page Size</label>
+    <div className="main-container ">
+      <div className="section canvas-container">
+        <canvas
+          id="canvas"
+          width={width}
+          height={height}
+          ref={displayCanvasElement}
+        ></canvas>
+      </div>
+      <div className="controls-container">
+      <div className="inner-container">
+      
+        <label>Page</label>
+        <div className="section page-size-selector">
+          <label>Page Size: </label>
           <select onChange={onPageSizeChanged}>
             {pageSizes.map((p) => {
               return (
@@ -69,8 +74,8 @@ const Canvas = (props: any) => {
             })}
           </select>
         </div>
-        <div className="vertical-controls">
-          <label>Vertical</label>
+        <label>Vertical</label>
+        <div className="section vertical-controls">
           <div>
             <label>Include Vertical lines? </label>
             <input
@@ -111,8 +116,8 @@ const Canvas = (props: any) => {
             />
           </div>
         </div>
-        <div className="horizontal-controls">
-          <label>Horizontal</label>
+        <label>Horizontal</label>
+        <div className="section horizontal-controls">
           <div>
             <div>
               <label>Include Vertical lines? </label>
@@ -127,6 +132,7 @@ const Canvas = (props: any) => {
         <div className="footer">
           <button
             type="button"
+            className="button-46 print"
             onClick={() => {
               PrintCanvas("A4");
             }}
@@ -135,13 +141,15 @@ const Canvas = (props: any) => {
           </button>
           <button
             type="button"
+            className="button-46 download"
             onClick={() => {
-              CovnertToPDF(width, height);
+              CovnertToPDF("A4");
             }}
           >
             Download
           </button>
         </div>
+      </div>
       </div>
     </div>
   );
