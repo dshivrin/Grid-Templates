@@ -24,7 +24,7 @@ export const drawCopperplateGrid = (
       height,
       width,
       scaleDown,
-      cm * scaleDown
+      cm * scaleDown / 4
     );
 };
 
@@ -33,6 +33,7 @@ export const drawCopperplateGrid = (
     So basic trigononetry will give me hypotenuse length given the angle and the opposite.
     Angle is in degrees only.
 */
+//todo: make standard 6mm, 5mm etc to work. 
 const drawCopperplateVerticalLines = (
   x1: number,
   y1: number,
@@ -53,7 +54,7 @@ const drawCopperplateVerticalLines = (
 
     drawLine(ctxRef, x1, x2, y1, y2);
 
-    y1 += 8 * scaleDown;
+    y1 += 8 * scaleDown;// improve this!
   }
 
   //then continue on the X axis
@@ -63,7 +64,7 @@ const drawCopperplateVerticalLines = (
 
     drawLine(ctxRef, x1, x2, y1, y2);
 
-    x1 += 4 * scaleDown;
+    x1 += 4 * scaleDown;//improve this!
   }
 };
 

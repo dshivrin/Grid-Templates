@@ -17,6 +17,7 @@ export const drawLine = (
   y1: number,
   y2: number
 ) => {
+  ctxRef.lineWidth = 1;//todo: param
   ctxRef.beginPath();
   ctxRef.moveTo(x2, y2);
   ctxRef.lineTo(x1, y1);
@@ -36,16 +37,15 @@ export const PrintCanvas = (pageSize: string) => {
   print(printableCanvas.toDataURL(), "image");
 };
 
-//upscaling a large canvas, drawing and passing on for prinring
-//TODO: requires some size adjustments
+//todo: pass the grid method as well 
 const prepareForPrinting = (
   width: number,
   height: number,
-  scaleDown: number
+  scale: number
 ) => {
   const printableCanvas = document.createElement("canvas");
-  printableCanvas.width = width * scaleDown;
-  printableCanvas.height = height * scaleDown;
+  printableCanvas.width = width * scale;
+  printableCanvas.height = height * scale;
   printableCanvas.id = "printable-canvas";
 
   const pctx = printableCanvas.getContext("2d");
@@ -54,48 +54,20 @@ const prepareForPrinting = (
   return printableCanvas;
 };
 
-//TODO: move to utils
-export const CovnertToPDF = (width: number, height: number) => {
+export const CovnertToPDF = (pageSize: string) => {
+  const page = consts.pageSizes.find((p) => p.size === pageSize);
+  if(!page) return;
   let pdf: jsPDF;
   //set the orientation
-  if (width > height) {
-    pdf = new jsPDF("l", "px", [width, height]); //landscape
+  if (page.width > page.height) {
+    pdf = new jsPDF("l", "px", [page.width, page.height]); //landscape
   } else {
-    pdf = new jsPDF("p", "px", [height, width]); //portrait
+    pdf = new jsPDF("p", "px", [page.height, page.width]); //portrait
   }
   //then we get the dimensions from the 'pdf' file itself
-  const printableCanvas = prepareForPrinting(width, height, 1);
+  const printableCanvas = prepareForPrinting(page.width, page.height, 1);
   const cw = pdf.internal.pageSize.getWidth();
   const ch = pdf.internal.pageSize.getHeight();
   pdf.addImage(printableCanvas.toDataURL(), "PNG", 0, 0, cw, ch);
   pdf.save("download.pdf");
 };
-
-export const Print = (args: any) => {};
-
-export const SaveAsPDF = (args: any) => {};
-
-//using parallax jsPDF. See https://parall.ax/products/jspdf and https://github.com/parallax/jsPDF
-//todo: use prepareForPrinting() for converting the upscaled version
-// const CovnertToPDF = () => {
-//   let pdf: jsPDF;
-//   //set the orientation
-//   if (width > height) {
-//     pdf = new jsPDF("l", "px", [width, height]); //landscape
-//   } else {
-//     pdf = new jsPDF("p", "px", [height, width]); //portrait
-//   }
-//   //then we get the dimensions from the 'pdf' file itself
-//   const cw = pdf.internal.pageSize.getWidth();
-//   const ch = pdf.internal.pageSize.getHeight();
-//   pdf.addImage(displayCanvasElement.current, "PNG", 0, 0, cw, ch);
-//   pdf.save("download.pdf");
-// };
-
-//printing directly: https://printjs.crabbly.com/
-//to be depricated
-// const Print = () => {
-//   const canvasId = prepareForPrinting();
-//   //print('', "html");
-// };
-//TODO: move to utils
