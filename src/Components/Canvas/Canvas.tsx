@@ -29,7 +29,7 @@ const Canvas = () => {
   const defaultPage = pageSizes.find((p) => p.isDefault || p.size === "A4");
 
   const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
-  const [pageOrientation, setPageOrientation] = useState("l");
+  const [pageOrientation, setPageOrientation] = useState("p");//
   const [canvasWidth, setCanvasWidth] = useState(defaultPage!.width);
   const [canvasHeight, setCanvasHeight] = useState(defaultPage!.height);
 
