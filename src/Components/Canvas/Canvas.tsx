@@ -2,10 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { CovnertToPDF, PrintCanvas } from "../../Utils/Utils";
 import { drawCopperplateGrid } from "../../Utils/Copperplate";
 import consts from "../../Utils/Consts.json";
-import landscapeLogo from "../../Media/landscape-mode.png";
-import portpaitLogo from "../../Media/portrait-mode.png";
-import "./Canvas.css";
 import Controls from "../Controls/Controls";
+import "./Canvas.css";
 
 /*
   TODO:
