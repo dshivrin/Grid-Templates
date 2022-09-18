@@ -42,7 +42,6 @@ export const drawCopperplateGrid = (
 /*
     Given Its a right triangle eventually, where the corner of the page is 90 degrees.
     So basic trigononetry will give me hypotenuse length given the angle and the opposite.
-    Angle is in degrees only.
 */
 //todo: make standard 6mm, 5mm etc to work.
 const drawCopperplateVerticalLines = (
@@ -58,12 +57,16 @@ const drawCopperplateVerticalLines = (
   let x2: number, y2: number;
 
   setLineSmoothness(ctxRef);
-
+  const theta = degrees_to_radians(360 - angle);
   //start drawing from the Y axis
-  //todo: address the issue on angle change
   while (y1 < height) {
-    x2 = x1 + Math.cos((Math.PI * 90) / angle) * (width + y1);
-    y2 = y1 + Math.sin((Math.PI * 90) / angle) * (width + y1);
+    //in a circle x:
+    // x = x1 + radius * Math.cos(theta)
+    //y = y1 + radius * Math.sin(theta)
+    //I multiply by 2 because I want the diameter, so the entire canvas will be covered
+
+    x2 = x1 + width * 2 * Math.cos(theta);
+    y2 = y1 + width * 2 * Math.sin(theta);
 
     drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
 
@@ -72,12 +75,12 @@ const drawCopperplateVerticalLines = (
 
   //then continue on the X axis
   while (x1 < width) {
-    x2 = x1 + Math.cos((Math.PI * 90) / angle) * (height + y1);
-    y2 = y1 + Math.sin((Math.PI * 90) / angle) * (height + y1);
+    x2 = x1 + height * 2 * Math.cos(theta);
+    y2 = y1 + height * 2 * Math.sin(theta);
 
     drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
 
-    x1 += 4 * scaleDown; //improve this!
+    x1 += 5.5 * scaleDown; //improve this!
   }
 };
 
@@ -98,4 +101,9 @@ const drawCopperplateHorizontalLines = (
     drawLine(ctxRef, x1, width, y1, y1, lineWidth);
     y1 += interval;
   }
+};
+
+const degrees_to_radians = (degrees: number) => {
+  var pi = Math.PI;
+  return degrees * (pi / 180);
 };
