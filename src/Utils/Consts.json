@@ -1,6 +1,7 @@
 {
   "cm": 11.18,
   "mm": 111.8,
+  "scaleDown": 5,
   "pageSizes": [
     { "size": "A4", "width": 2480, "height": 3508, "isDefault": true },
     { "size": "A5", "width": 1748, "height": 2480 },

@@ -24,20 +24,19 @@ import "./Canvas.css";
 //1 cm ~ 11.8px
 
 const Canvas = () => {
-  const scaleDown = 5;
-  const mm = 111.8 / scaleDown;
-
+  const scaleDown = consts.scaleDown;
+  const mm = consts.mm;
   const pageSizes = consts.pageSizes;
   const defaultPage = pageSizes.find((p) => p.isDefault || p.size === "A4");
 
   const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
   const [pageOrientation, setPageOrientation] = useState("l");
-  const [canvasWidth, setCanvasWidth] = useState(defaultPage!.width );
-  const [canvasHeight, setCanvasHeight] = useState(defaultPage!.height );
+  const [canvasWidth, setCanvasWidth] = useState(defaultPage!.width);
+  const [canvasHeight, setCanvasHeight] = useState(defaultPage!.height);
 
   const [includeVerticalLines, setincludeVerticalLines] = useState(true);
-  const [verticalAngle, setVerticalAngle] = useState(55);
-  const [verticalSpacing, setVerticalSpacing] = useState(5); //default is 5 mm
+  const [verticalAngle, setVerticalAngle] = useState(55);//state is not needed here as the angle is not expected to change
+  const [verticalSpacing, setVerticalSpacing] = useState(12); //default is 5 mm
 
   const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
   const [horizontalSpacing, setHorizontalSpacing] = useState(5); //default is 5 mm
@@ -79,12 +78,12 @@ const Canvas = () => {
     drawCopperplateGrid(
       ctxRef,
       0,
-      mm,
+      mm / scaleDown,
       verticalAngle,
       canvasWidth / scaleDown,
       canvasHeight / scaleDown,
-      lineWidth,
-      (mm * horizontalSpacing) / scaleDown,
+      lineWidth / scaleDown,
+      (mm * horizontalSpacing) / scaleDown / 1.41,
       (mm * verticalSpacing) / scaleDown,
       includeHorizontalLines,
       includeVerticalLines
@@ -99,7 +98,7 @@ const Canvas = () => {
     includeHorizontalLines,
     includeVerticalLines,
     selectedPageSize,
-    mm,
+    mm, // <= mm is not expected to change, nevertheless React feels better when its here
   ]);
 
   return (
@@ -183,7 +182,7 @@ const Canvas = () => {
               />
             </div>
             <div>
-              <label>Vertical spacing:</label>
+              <label>Vertical spacing: </label>
               <input
                 type="number"
                 id="vertical-spacing"
@@ -234,7 +233,7 @@ const Canvas = () => {
                   type="number"
                   id="horizontal-spacing"
                   min="1"
-                  max="10"
+                  max="15"
                   value={horizontalSpacing}
                   disabled={!includeHorizontalLines}
                   onChange={(event) => {

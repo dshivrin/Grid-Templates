@@ -72,13 +72,15 @@ const drawCopperplateVerticalLines = (
     y1 += verticalInterval; // improve this!
   }
   //then continue on the X axis
+
+  const divider = height / width;
   while (x1 < width) {
     x2 = x1 + height * 2 * Math.cos(theta);
     y2 = y1 + height * 2 * Math.sin(theta);
 
     drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
 
-    x1 += verticalInterval / 1.5; //improve this!
+    x1 += verticalInterval / divider; // <= divider = ~1.41 
   }
 };
 
@@ -95,7 +97,6 @@ const drawCopperplateHorizontalLines = (
 
   console.log("horizontalInterval: ", horizontalInterval);
 
-  //TODO: landscape, this is for portrait mode
   while (y1 < height) {
     drawLine(ctxRef, x1, width, y1, y1, lineWidth);
     y1 += horizontalInterval;
