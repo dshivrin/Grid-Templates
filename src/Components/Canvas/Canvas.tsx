@@ -8,8 +8,13 @@ import "./Canvas.css";
 
 /*
   TODO:
-  1.add form validation for all inputs
-  2.Add landscape / portrait modes
+  1. Add form validation for all inputs
+  2. Printing and exporting PDF in landscape mode 
+  3. Display canvas is not to scale
+  4. Display for horizantal + vertical changes
+  5. useMemo 
+  6. Add proper types
+  7. Proper CSS, consider adding bootstrap before any changes
 */
 
 //https://www.instantprint.co.uk/printspiration/print-design-tips/size-guide
