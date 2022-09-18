@@ -17,7 +17,6 @@ import "./Canvas.css";
   7. Proper CSS, consider adding bootstrap before any changes
 */
 
-//https://www.instantprint.co.uk/printspiration/print-design-tips/size-guide
 //print is usually 300 dpi
 //A4 page size - 3508 x 2480 px (297 x 210 mm)
 //A5 page size - 2480 x 1748 px (210 x 148 mm)
@@ -33,9 +32,9 @@ const Canvas = () => {
 
   const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
   const [pageOrientation, setPageOrientation] = useState("l");
-  const [displayCanvasWidth, setDisplayCanvasWidth] = useState(defaultPage!.width );
-  const [displayCanvasHeight, setDisplayCanvasHeight] = useState(defaultPage!.height  );
-    
+  const [canvasWidth, setCanvasWidth] = useState(defaultPage!.width );
+  const [canvasHeight, setCanvasHeight] = useState(defaultPage!.height );
+
   const [includeVerticalLines, setincludeVerticalLines] = useState(true);
   const [verticalAngle, setVerticalAngle] = useState(55);
   const [verticalSpacing, setVerticalSpacing] = useState(5); //default is 5 mm
@@ -51,12 +50,12 @@ const Canvas = () => {
     const page = pageSizes.find((p) => p.size === size);
     if (!page) return;
 
-    if (pageOrientation == "p") {
-      setDisplayCanvasWidth(page.width);
-      setDisplayCanvasHeight(page.height);
+    if (pageOrientation === "p") {
+      setCanvasWidth(page.width);
+      setCanvasHeight(page.height);
     } else {
-      setDisplayCanvasWidth(page.height);
-      setDisplayCanvasHeight(page.width);
+      setCanvasWidth(page.height);
+      setCanvasHeight(page.width);
     }
 
     setSelectedPageSize(page.size);
@@ -67,11 +66,11 @@ const Canvas = () => {
     const page = pageSizes.find((p) => p.size === selectedPageSize);
     if (!page) return;
     if (mode === "p") {
-      setDisplayCanvasWidth(page.width);
-      setDisplayCanvasHeight(page.height);
+      setCanvasWidth(page.width);
+      setCanvasHeight(page.height);
     } else {
-      setDisplayCanvasWidth(page.height);
-      setDisplayCanvasHeight(page.width);
+      setCanvasWidth(page.height);
+      setCanvasHeight(page.width);
     }
   };
 
@@ -82,22 +81,25 @@ const Canvas = () => {
       0,
       mm,
       verticalAngle,
-      displayCanvasWidth / scaleDown,
-      displayCanvasHeight / scaleDown,
+      canvasWidth / scaleDown,
+      canvasHeight / scaleDown,
       lineWidth,
-      scaleDown,
+      (mm * horizontalSpacing) / scaleDown,
+      (mm * verticalSpacing) / scaleDown,
       includeHorizontalLines,
       includeVerticalLines
     );
   }, [
-    displayCanvasWidth,
-    displayCanvasHeight,
+    canvasWidth,
+    canvasHeight,
     lineWidth,
     verticalAngle,
     verticalSpacing,
+    horizontalSpacing,
     includeHorizontalLines,
     includeVerticalLines,
     selectedPageSize,
+    mm,
   ]);
 
   return (
@@ -105,8 +107,8 @@ const Canvas = () => {
       <div className="section canvas-container">
         <canvas
           id="canvas"
-          width={displayCanvasWidth / scaleDown}
-          height={displayCanvasHeight / scaleDown}
+          width={canvasWidth / scaleDown}
+          height={canvasHeight / scaleDown}
           ref={displayCanvasElement}
         ></canvas>
       </div>
@@ -193,7 +195,7 @@ const Canvas = () => {
                 }}
                 disabled={!includeVerticalLines}
               />{" "}
-              cm
+              mm
             </div>
             <div>
               <label>Vertical angle: </label>
@@ -239,7 +241,7 @@ const Canvas = () => {
                     setHorizontalSpacing(+event.target.value);
                   }}
                 />{" "}
-                cm
+                mm
               </div>
             </div>
           </div>
@@ -249,8 +251,10 @@ const Canvas = () => {
               className="button-46 print"
               onClick={() => {
                 PrintCanvas(
-                  "A4",
+                  selectedPageSize,
                   lineWidth,
+                  horizontalSpacing,
+                  verticalSpacing,
                   includeHorizontalLines,
                   includeVerticalLines
                 );
@@ -263,8 +267,10 @@ const Canvas = () => {
               className="button-46 download"
               onClick={() => {
                 CovnertToPDF(
-                  "A4",
+                  selectedPageSize,
                   lineWidth,
+                  horizontalSpacing,
+                  verticalSpacing,
                   includeHorizontalLines,
                   includeVerticalLines
                 );

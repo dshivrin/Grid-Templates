@@ -26,7 +26,7 @@
 .controls-container {
     flex-basis:25%; 
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     flex-direction: column;
     align-items: stretch; 
     height: 100%; /*<= this works only because the main-container's height is 100vh */

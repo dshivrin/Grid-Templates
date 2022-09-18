@@ -5,10 +5,10 @@ import consts from "../Utils/Consts.json";
 
 const mm = consts.mm;
 
-export const setLineSmoothness = (ctxRef: any) => {
+export const setLineSmoothness = (ctxRef: any, lineWidth: number) => {
   ctxRef.lineCap = "round";
   ctxRef.lineJoin = "round";
-  ctxRef.lineWidth = 1; // scalable? todo: use args
+  ctxRef.lineWidth = lineWidth;
   //ctxRef.translate(0.5, 0.5);
 };
 
@@ -37,6 +37,8 @@ export const clearCanvas = (ctxRef: any, width: number, height: number) => {
 export const PrintCanvas = (
   pageSize: string,
   lineWidth: number,
+  horizontaleInterval: number,
+  verticaleInterval: number,
   drawHorizontal: boolean,
   drawVertical: boolean
 ) => {
@@ -46,19 +48,14 @@ export const PrintCanvas = (
     page.width,
     page.height,
     lineWidth,
-    1,
+    horizontaleInterval,
+    verticaleInterval,
     drawHorizontal,
     drawVertical
   );
-  // const printOptions = {
-  //   printable:printableCanvas.toDataURL(),
-  //   //type: 'image',
-  //   documentTitle: '',
-  //   header:''
-  // }
-  printJS(printableCanvas.toDataURL(), "image");
-  //printJS(printOptions);// coudn't remove the header for some reason, need to in
 
+  //TODO: add the size in the top (e.g. 5mm) and try removing all the garbage that this library adds
+  printJS(printableCanvas.toDataURL(), "image");
 };
 
 //todo: pass the grid method as well
@@ -66,13 +63,14 @@ const prepareForPrinting = (
   width: number,
   height: number,
   lineWidth: number,
-  scale: number,
+  horizontaleInterval: number,
+  verticaleInterval: number,
   drawHorizontal: boolean,
   drawVertical: boolean
 ) => {
   const printableCanvas = document.createElement("canvas");
-  printableCanvas.width = width * scale;
-  printableCanvas.height = height * scale;
+  printableCanvas.width = width;
+  printableCanvas.height = height;
   printableCanvas.id = "printable-canvas";
 
   const pctx = printableCanvas.getContext("2d");
@@ -80,12 +78,13 @@ const prepareForPrinting = (
   drawCopperplateGrid(
     pctx,
     0,
-    111.8,
+    mm,
     55,
     width,
     height,
     lineWidth,
-    35,
+    horizontaleInterval * mm,
+    verticaleInterval * mm,
     drawHorizontal,
     drawVertical
   );
@@ -95,6 +94,8 @@ const prepareForPrinting = (
 export const CovnertToPDF = (
   pageSize: string,
   lineWidth: number,
+  horizontaleInterval: number,
+  verticaleInterval: number,
   drawHorizontal: boolean,
   drawVertical: boolean
 ) => {
@@ -112,7 +113,8 @@ export const CovnertToPDF = (
     page.width,
     page.height,
     lineWidth,
-    1,
+    horizontaleInterval,
+    verticaleInterval,
     drawHorizontal,
     drawVertical
   );
