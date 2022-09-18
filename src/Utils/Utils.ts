@@ -5,7 +5,7 @@ import consts from "../Utils/Consts.json";
 
 const mm = consts.mm;
 
-export const setLineSmoothness = (ctxRef: any, lineWidth: number) => {
+export const setLineSmoothness = (ctxRef: CanvasRenderingContext2D, lineWidth: number) => {
   ctxRef.lineCap = "round";
   ctxRef.lineJoin = "round";
   ctxRef.lineWidth = lineWidth;
@@ -13,7 +13,7 @@ export const setLineSmoothness = (ctxRef: any, lineWidth: number) => {
 };
 
 export const drawLine = (
-  ctxRef: any,
+  ctxRef: CanvasRenderingContext2D,
   x1: number,
   x2: number,
   y1: number,
@@ -27,7 +27,7 @@ export const drawLine = (
   ctxRef.stroke();
 };
 
-export const clearCanvas = (ctxRef: any, width: number, height: number) => {
+export const clearCanvas = (ctxRef: CanvasRenderingContext2D, width: number, height: number) => {
   ctxRef?.fillRect(0, 0, width, height);
   ctxRef?.clearRect(0, 0, width, height);
   //clear bg / fill etc
@@ -55,7 +55,7 @@ export const PrintCanvas = (
   );
 
   //TODO: add the size in the top (e.g. 5mm) and try removing all the garbage that this library adds
-  printJS(printableCanvas.toDataURL(), "image");
+  printJS(printableCanvas!.toDataURL(), "image");
 };
 
 //todo: pass the grid method as well
@@ -74,6 +74,7 @@ const prepareForPrinting = (
   printableCanvas.id = "printable-canvas";
 
   const pctx = printableCanvas.getContext("2d");
+  if(!pctx) return;
   //todo: calc the scale by dividing the display widht and heigth and printable
   drawCopperplateGrid(
     pctx,
@@ -120,6 +121,6 @@ export const CovnertToPDF = (
   );
   const cw = pdf.internal.pageSize.getWidth();
   const ch = pdf.internal.pageSize.getHeight();
-  pdf.addImage(printableCanvas.toDataURL(), "PNG", 0, 0, cw, ch);
+  pdf.addImage(printableCanvas!.toDataURL(), "PNG", 0, 0, cw, ch);
   pdf.save("download.pdf");
 };

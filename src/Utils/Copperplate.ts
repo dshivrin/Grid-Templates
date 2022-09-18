@@ -4,7 +4,7 @@ import consts from "./Consts.json";
 const mm = consts.mm;
 
 export const drawCopperplateGrid = (
-  ctxRef: any,
+  ctxRef: CanvasRenderingContext2D,
   x1: number,
   y1: number,
   angle: number,
@@ -85,7 +85,7 @@ const drawCopperplateVerticalLines = (
 };
 
 const drawCopperplateHorizontalLines = (
-  ctxRef: any,
+  ctxRef: CanvasRenderingContext2D,
   x1: number,
   y1: number,
   height: number,

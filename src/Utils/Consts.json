@@ -4,7 +4,7 @@
   "scaleDown": 5,
   "pageSizes": [
     { "size": "A4", "width": 2480, "height": 3508, "isDefault": true },
-    { "size": "A5", "width": 1748, "height": 2480 },
-    { "size": "A6", "width": 1240, "height": 1748 }
+    { "size": "A5", "width": 1748, "height": 2480, "isDefault": false },
+    { "size": "A6", "width": 1240, "height": 1748, "isDefault": false }
   ]
 }

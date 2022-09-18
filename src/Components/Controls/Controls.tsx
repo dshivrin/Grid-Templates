@@ -1,8 +1,9 @@
 import landscapeLogo from "../../Media/landscape-mode.png";
 import portpaitLogo from "../../Media/portrait-mode.png";
+import { ControlsProps, PageSize } from "../../Utils/types";
 import "./Controls.css";
 
-const Controls = (props: any) => {
+const Controls = (props: ControlsProps) => {
   const {
     includeVerticalLines,
     includeHorizontalLines,
@@ -36,7 +37,7 @@ const Controls = (props: any) => {
               onPageSizeChanged(event.target.value);
             }}
           >
-            {pageSizes.map((p: any) => {
+            {pageSizes.map((p: PageSize) => {
               return (
                 <option key={`optionKey:${p.size}`} value={p.size}>
                   {p.size}

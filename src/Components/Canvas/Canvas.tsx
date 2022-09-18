@@ -4,6 +4,7 @@ import { drawCopperplateGrid } from "../../Utils/Copperplate";
 import consts from "../../Utils/Consts.json";
 import Controls from "../Controls/Controls";
 import "./Canvas.css";
+import { PageSize } from "../../Utils/types";
 
 /*
   TODO:
@@ -24,7 +25,7 @@ import "./Canvas.css";
 const Canvas = () => {
   const scaleDown = consts.scaleDown;
   const mm = consts.mm;
-  const pageSizes = consts.pageSizes;
+  const pageSizes: Array<PageSize> = consts.pageSizes;
   const defaultPage = pageSizes.find((p) => p.isDefault || p.size === "A4");
 
   const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
@@ -73,6 +74,7 @@ const Canvas = () => {
 
   useEffect(() => {
     const ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
+    if(!ctxRef) return;
     drawCopperplateGrid(
       ctxRef,
       0,
