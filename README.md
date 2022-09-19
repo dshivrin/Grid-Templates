@@ -1,4 +1,4 @@
-The purpose of this project is to generate sheets for calligraphy to be used with a lightbox. Currently supporting Copperplate script only. 
+The purpose of this project is to generate sheets for calligraphy to be printed used with a lightbox. Currently supporting Copperplate and Modern scripts only. 
 
 
 Known bugs:
