@@ -1,3 +1,24 @@
+The purpose of this project is to generate sheets for calligraphy to be used with a lightbox. Currently supporting Copperplate script only. 
+
+
+Known bugs:
+
+* Landscape mode printing is inaccurate
+* Scale is not accurate, between the display canvas and the printing one.
+
+
+Upcoming:
+
+* Blackletter (Gotic) sheets
+* punctuated lines above and below the header and the baseline
+
+
+![20220919_114758](https://user-images.githubusercontent.com/17846404/190982935-bb4f321d-553c-48de-a4b2-6608d2c6794c.jpg)
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
