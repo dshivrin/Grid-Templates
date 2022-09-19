@@ -14,6 +14,8 @@ import { PageSize } from "../../Utils/types";
   5. useMemo 
   6. Add proper types
   7. Proper CSS, consider adding bootstrap before any changes
+  8. Add punctuated lines in between to distinguish the main line and asc+desc, 
+    divide the page to sections of 5 
 */
 
 //print is usually 300 dpi
@@ -35,10 +37,10 @@ const Canvas = () => {
 
   const [includeVerticalLines, setIncludeVerticalLines] = useState(true);
   const [verticalAngle, setVerticalAngle] = useState(55);//state is not needed here as the angle is not expected to change
-  const [verticalSpacing, setVerticalSpacing] = useState(12); //default is 5 mm
+  const [verticalSpacing, setVerticalSpacing] = useState(2); 
 
   const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
-  const [horizontalSpacing, setHorizontalSpacing] = useState(5); //default is 5 mm
+  const [horizontalSpacing, setHorizontalSpacing] = useState(1); 
 
   const [lineWidth, setLineWidth] = useState(1); //default is 1 px
 
