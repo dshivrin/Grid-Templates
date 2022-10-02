@@ -47,7 +47,7 @@ export const drawCopperplateGrid = (
     In a circle x = x1 + radius * Math.cos(theta) and y = y1 + radius * Math.sin(theta)
     I multiply by 2 because I want the diameter, so the entire canvas will be covered
 */
-//todo: make standard 6mm, 5mm etc to work.
+//TODO: in landscape mode (h<w) the interval calculation in 2mm off for some reason
 const drawCopperplateVerticalLines = (
   x1: number,
   y1: number,
@@ -62,6 +62,13 @@ const drawCopperplateVerticalLines = (
 
   setLineSmoothness(ctxRef, lineWidth);
   const theta = degreesToRadians(360 - angle);
+
+  const scale = height / width;
+  let vertical = verticalInterval;
+
+  if (height < width) {
+    vertical = verticalInterval / scale;
+  }
   //start drawing from the Y axis
   while (y1 < height) {
     x2 = x1 + width * 2 * Math.cos(theta);
@@ -69,19 +76,21 @@ const drawCopperplateVerticalLines = (
 
     drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
 
-    y1 += verticalInterval;
+    y1 += vertical;
   }
   //then continue on the X axis
-
-  const divider = height / width;
-  verticalInterval /= divider;
+  if (height > width) {
+    vertical = verticalInterval / scale;
+  }else{
+    vertical = verticalInterval;
+  }
   while (x1 < width) {
     x2 = x1 + height * 2 * Math.cos(theta);
     y2 = y1 + height * 2 * Math.sin(theta);
 
     drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
 
-    x1 += verticalInterval;
+    x1 += vertical;
   }
 };
 

@@ -31,16 +31,16 @@ const Canvas = () => {
   const defaultPage = pageSizes.find((p) => p.isDefault || p.size === "A4");
 
   const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
-  const [pageOrientation, setPageOrientation] = useState("p");//
+  const [pageOrientation, setPageOrientation] = useState("p"); //
   const [canvasWidth, setCanvasWidth] = useState(defaultPage!.width);
   const [canvasHeight, setCanvasHeight] = useState(defaultPage!.height);
 
   const [includeVerticalLines, setIncludeVerticalLines] = useState(true);
-  const [verticalAngle, setVerticalAngle] = useState(55);//state is not needed here as the angle is not expected to change
-  const [verticalSpacing, setVerticalSpacing] = useState(7); 
+  const [verticalAngle, setVerticalAngle] = useState(55); //state is not needed here as the angle is not expected to change
+  const [verticalSpacing, setVerticalSpacing] = useState(7);
 
   const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
-  const [horizontalSpacing, setHorizontalSpacing] = useState(5); 
+  const [horizontalSpacing, setHorizontalSpacing] = useState(5);
 
   const [lineWidth, setLineWidth] = useState(1); //default is 1 px
 
@@ -76,8 +76,19 @@ const Canvas = () => {
 
   useEffect(() => {
     const ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
-    if(!ctxRef) return;
-    const scale = canvasHeight / canvasWidth;
+    if (!ctxRef) return;
+    let scale: number;
+    let horizontal, vertical: number;
+
+    if (canvasHeight > canvasWidth) {
+      scale = canvasHeight / canvasWidth;
+    } else {
+      scale = canvasWidth / canvasHeight;
+    }
+
+    horizontal = mm * horizontalSpacing * scale;
+    vertical = mm * verticalSpacing * scale;
+    //debugger;
     drawCopperplateGrid(
       ctxRef,
       0,
@@ -86,8 +97,8 @@ const Canvas = () => {
       canvasWidth / scaleDown,
       canvasHeight / scaleDown,
       lineWidth / scaleDown,
-      (mm * horizontalSpacing) * scale,
-      (mm * verticalSpacing) * scale,
+      horizontal,
+      vertical,
       includeHorizontalLines,
       includeVerticalLines
     );
@@ -103,7 +114,6 @@ const Canvas = () => {
     selectedPageSize,
     mm, // <= mm is not expected to change, nevertheless React feels better when its here
   ]);
-
 
   const controlsOptions = {
     includeVerticalLines,
@@ -125,7 +135,7 @@ const Canvas = () => {
     setHorizontalSpacing,
     PrintCanvas,
     CovnertToPDF,
-  }
+  };
 
   return (
     <div className="main-container">
@@ -138,7 +148,7 @@ const Canvas = () => {
         ></canvas>
       </div>
       <div className="controls-container">
-        <Controls {...controlsOptions}/>
+        <Controls {...controlsOptions} />
       </div>
     </div>
   );
