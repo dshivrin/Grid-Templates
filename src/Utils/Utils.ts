@@ -4,7 +4,7 @@ import { drawCopperplateGrid } from "./Copperplate";
 import consts from "../Utils/Consts.json";
 
 const mm = consts.mm;
-
+const scaleDown = consts.scaleDown;
 export const setLineSmoothness = (ctxRef: CanvasRenderingContext2D, lineWidth: number) => {
   ctxRef.lineCap = "round";
   ctxRef.lineJoin = "round";
@@ -22,8 +22,8 @@ export const drawLine = (
 ) => {
   ctxRef.lineWidth = lineWidth;
   ctxRef.beginPath();
-  ctxRef.moveTo(x2, y2);
-  ctxRef.lineTo(x1, y1);
+  ctxRef.moveTo(x1, y1);
+  ctxRef.lineTo(x2, y2);
   ctxRef.stroke();
 };
 
@@ -75,17 +75,18 @@ const prepareForPrinting = (
 
   const pctx = printableCanvas.getContext("2d");
   if(!pctx) return;
-  //todo: calc the scale by dividing the display widht and heigth and printable
+  const scale = height / width * scaleDown;
+  debugger;
   drawCopperplateGrid(
     pctx,
     0,
     mm,
     55,
-    width,
+    width ,
     height,
     lineWidth,
-    horizontaleInterval * mm,
-    verticaleInterval * mm,
+    (mm * horizontaleInterval * scale),
+    (mm * verticaleInterval * scale),
     drawHorizontal,
     drawVertical
   );

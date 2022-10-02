@@ -69,18 +69,19 @@ const drawCopperplateVerticalLines = (
 
     drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
 
-    y1 += verticalInterval; // improve this!
+    y1 += verticalInterval;
   }
   //then continue on the X axis
 
   const divider = height / width;
+  verticalInterval /= divider;
   while (x1 < width) {
     x2 = x1 + height * 2 * Math.cos(theta);
     y2 = y1 + height * 2 * Math.sin(theta);
 
     drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
 
-    x1 += verticalInterval / divider; // <= divider = ~1.41 
+    x1 += verticalInterval;
   }
 };
 
@@ -94,8 +95,6 @@ const drawCopperplateHorizontalLines = (
   horizontalInterval: number
 ) => {
   setLineSmoothness(ctxRef, lineWidth);
-
-  console.log("horizontalInterval: ", horizontalInterval);
 
   while (y1 < height) {
     drawLine(ctxRef, x1, width, y1, y1, lineWidth);

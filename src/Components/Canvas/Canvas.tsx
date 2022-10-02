@@ -22,7 +22,7 @@ import { PageSize } from "../../Utils/types";
 //A4 page size - 3508 x 2480 px (297 x 210 mm)
 //A5 page size - 2480 x 1748 px (210 x 148 mm)
 //A6 page size - 1748 x 1240 px (148 x 105 mm)
-//1 cm ~ 11.8px
+//1 cm = 37.7952755906
 
 const Canvas = () => {
   const scaleDown = consts.scaleDown;
@@ -37,10 +37,10 @@ const Canvas = () => {
 
   const [includeVerticalLines, setIncludeVerticalLines] = useState(true);
   const [verticalAngle, setVerticalAngle] = useState(55);//state is not needed here as the angle is not expected to change
-  const [verticalSpacing, setVerticalSpacing] = useState(2); 
+  const [verticalSpacing, setVerticalSpacing] = useState(7); 
 
   const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
-  const [horizontalSpacing, setHorizontalSpacing] = useState(1); 
+  const [horizontalSpacing, setHorizontalSpacing] = useState(5); 
 
   const [lineWidth, setLineWidth] = useState(1); //default is 1 px
 
@@ -77,6 +77,7 @@ const Canvas = () => {
   useEffect(() => {
     const ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
     if(!ctxRef) return;
+    const scale = canvasHeight / canvasWidth;
     drawCopperplateGrid(
       ctxRef,
       0,
@@ -85,8 +86,8 @@ const Canvas = () => {
       canvasWidth / scaleDown,
       canvasHeight / scaleDown,
       lineWidth / scaleDown,
-      (mm * horizontalSpacing) / scaleDown / 1.41,
-      (mm * verticalSpacing) / scaleDown,
+      (mm * horizontalSpacing) * scale,
+      (mm * verticalSpacing) * scale,
       includeHorizontalLines,
       includeVerticalLines
     );
@@ -113,6 +114,7 @@ const Canvas = () => {
     selectedPageSize,
     pageSizes,
     lineWidth,
+    pageOrientation,
     setLineWidth,
     onOrientationChange,
     onPageSizeChanged,

@@ -8,6 +8,7 @@ export type ControlsProps = {
   selectedPageSize: string;
   pageSizes: Array<PageSize>;
   lineWidth: number;
+  pageOrientation: string;
   setLineWidth: (width: number) => void;
   onOrientationChange: (mode: string) => void;
   onPageSizeChanged: (size: string) => void;
@@ -22,7 +23,8 @@ export type ControlsProps = {
     horizontaleInterval: number,
     verticaleInterval: number,
     drawHorizontal: boolean,
-    drawVertical: boolean
+    drawVertical: boolean,
+    pageOrientation: string
   ) => void;
   CovnertToPDF: (
     pageSize: string,

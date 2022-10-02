@@ -13,6 +13,7 @@ const Controls = (props: ControlsProps) => {
     selectedPageSize,
     pageSizes,
     lineWidth,
+    pageOrientation,
     setLineWidth,
     onOrientationChange,
     onPageSizeChanged,
@@ -169,7 +170,8 @@ const Controls = (props: ControlsProps) => {
               horizontalSpacing,
               verticalSpacing,
               includeHorizontalLines,
-              includeVerticalLines
+              includeVerticalLines,
+              pageOrientation
             );
           }}
         >
