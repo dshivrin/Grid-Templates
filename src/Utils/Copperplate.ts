@@ -74,21 +74,21 @@ const drawCopperplateVerticalLines = (
     x2 = x1 + width * 2 * Math.cos(theta);
     y2 = y1 + width * 2 * Math.sin(theta);
 
-    drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
+    drawLine(ctxRef, x1, y1, x2, y2, lineWidth);
 
     y1 += vertical;
   }
   //then continue on the X axis
   if (height > width) {
     vertical = verticalInterval / scale;
-  }else{
+  } else {
     vertical = verticalInterval;
   }
   while (x1 < width) {
     x2 = x1 + height * 2 * Math.cos(theta);
     y2 = y1 + height * 2 * Math.sin(theta);
 
-    drawLine(ctxRef, x1, x2, y1, y2, lineWidth);
+    drawLine(ctxRef, x1, y1, x2, y2, lineWidth);
 
     x1 += vertical;
   }
@@ -106,7 +106,7 @@ const drawCopperplateHorizontalLines = (
   setLineSmoothness(ctxRef, lineWidth);
 
   while (y1 < height) {
-    drawLine(ctxRef, x1, width, y1, y1, lineWidth);
+    drawLine(ctxRef, x1, y1, width, y1, lineWidth);
     y1 += horizontalInterval;
   }
 };

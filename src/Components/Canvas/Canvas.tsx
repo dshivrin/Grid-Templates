@@ -5,6 +5,7 @@ import consts from "../../Utils/Consts.json";
 import Controls from "../Controls/Controls";
 import "./Canvas.css";
 import { PageSize } from "../../Utils/types";
+import { drawBlackletterGrid } from "../../Utils/Blackletter";
 
 /*
   TODO:
@@ -89,19 +90,20 @@ const Canvas = () => {
     horizontal = mm * horizontalSpacing * scale;
     vertical = mm * verticalSpacing * scale;
     //debugger;
-    drawCopperplateGrid(
-      ctxRef,
-      0,
-      mm / scaleDown,
-      verticalAngle,
-      canvasWidth / scaleDown,
-      canvasHeight / scaleDown,
-      lineWidth / scaleDown,
-      horizontal,
-      vertical,
-      includeHorizontalLines,
-      includeVerticalLines
-    );
+    // drawCopperplateGrid(
+    //   ctxRef,
+    //   0,
+    //   mm / scaleDown,
+    //   verticalAngle,
+    //   canvasWidth / scaleDown,
+    //   canvasHeight / scaleDown,
+    //   lineWidth / scaleDown,
+    //   horizontal,
+    //   vertical,
+    //   includeHorizontalLines,
+    //   includeVerticalLines
+    // );
+    drawBlackletterGrid(ctxRef, 2.4, canvasWidth/ scaleDown, canvasHeight/ scaleDown, 2.4*10, lineWidth / scaleDown);
   }, [
     canvasWidth,
     canvasHeight,
