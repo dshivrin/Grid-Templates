@@ -42,3 +42,10 @@ export type PageSize = {
   height: number,
   isDefault: boolean
 }
+
+export type TabsProps = {
+  ctxRef: CanvasRenderingContext2D,
+  canvasWidth: number,
+  canvasHeight: number
+
+}

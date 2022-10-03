@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 import { CovnertToPDF, PrintCanvas } from "../../Utils/Utils";
 import { drawCopperplateGrid } from "../../Utils/Copperplate";
@@ -6,6 +7,8 @@ import Controls from "../Controls/Controls";
 import "./Canvas.css";
 import { PageSize } from "../../Utils/types";
 import { drawBlackletterGrid } from "../../Utils/Blackletter";
+
+import BasicTabs from '../Tabs/Tabs';
 
 /*
   TODO:
@@ -31,64 +34,68 @@ const Canvas = () => {
   const pageSizes: Array<PageSize> = consts.pageSizes;
   const defaultPage = pageSizes.find((p) => p.isDefault || p.size === "A4");
 
-  const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
-  const [pageOrientation, setPageOrientation] = useState("p"); //
-  const [canvasWidth, setCanvasWidth] = useState(defaultPage!.width);
-  const [canvasHeight, setCanvasHeight] = useState(defaultPage!.height);
+  // const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
+  // const [pageOrientation, setPageOrientation] = useState("p"); //
+  // const [canvasWidth, setCanvasWidth] = useState(defaultPage!.width);
+  // const [canvasHeight, setCanvasHeight] = useState(defaultPage!.height);
 
-  const [includeVerticalLines, setIncludeVerticalLines] = useState(true);
-  const [verticalAngle, setVerticalAngle] = useState(55); //state is not needed here as the angle is not expected to change
-  const [verticalSpacing, setVerticalSpacing] = useState(7);
+  // const [includeVerticalLines, setIncludeVerticalLines] = useState(true);
+  // const [verticalAngle, setVerticalAngle] = useState(55); //state is not needed here as the angle is not expected to change
+  // const [verticalSpacing, setVerticalSpacing] = useState(7);
 
-  const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
-  const [horizontalSpacing, setHorizontalSpacing] = useState(5);
+  // const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
+  // const [horizontalSpacing, setHorizontalSpacing] = useState(5);
 
-  const [lineWidth, setLineWidth] = useState(1); //default is 1 px
+  // const [lineWidth, setLineWidth] = useState(1); //default is 1 px
 
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
+  let ctxRef = null;
 
-  const onPageSizeChanged = (size: string) => {
-    const page = pageSizes.find((p) => p.size === size);
-    if (!page) return;
+  // const onPageSizeChanged = (size: string) => {
+  //   const page = pageSizes.find((p) => p.size === size);
+  //   if (!page) return;
 
-    if (pageOrientation === "p") {
-      setCanvasWidth(page.width);
-      setCanvasHeight(page.height);
-    } else {
-      setCanvasWidth(page.height);
-      setCanvasHeight(page.width);
-    }
+  //   if (pageOrientation === "p") {
+  //     setCanvasWidth(page.width);
+  //     setCanvasHeight(page.height);
+  //   } else {
+  //     setCanvasWidth(page.height);
+  //     setCanvasHeight(page.width);
+  //   }
 
-    setSelectedPageSize(page.size);
-  };
+  //   setSelectedPageSize(page.size);
+  // };
 
-  const onOrientationChange = (mode: string) => {
-    setPageOrientation(mode);
-    const page = pageSizes.find((p) => p.size === selectedPageSize);
-    if (!page) return;
-    if (mode === "p") {
-      setCanvasWidth(page.width);
-      setCanvasHeight(page.height);
-    } else {
-      setCanvasWidth(page.height);
-      setCanvasHeight(page.width);
-    }
-  };
+  // const onOrientationChange = (mode: string) => {
+  //   setPageOrientation(mode);
+  //   const page = pageSizes.find((p) => p.size === selectedPageSize);
+  //   if (!page) return;
+  //   if (mode === "p") {
+  //     setCanvasWidth(page.width);
+  //     setCanvasHeight(page.height);
+  //   } else {
+  //     setCanvasWidth(page.height);
+  //     setCanvasHeight(page.width);
+  //   }
+  // };
 
   useEffect(() => {
-    const ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
+    ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
     if (!ctxRef) return;
     let scale: number;
     let horizontal, vertical: number;
 
-    if (canvasHeight > canvasWidth) {
-      scale = canvasHeight / canvasWidth;
+    const width = displayCanvasElement.current!.width
+    const height = displayCanvasElement.current!.height
+
+    if (height > width) {
+      scale = height / width;
     } else {
-      scale = canvasWidth / canvasHeight;
+      scale = width / height;
     }
 
-    horizontal = mm * horizontalSpacing * scale;
-    vertical = mm * verticalSpacing * scale;
+    horizontal = mm * 5 * scale;
+    vertical = mm * 7 * scale;
     //debugger;
     // drawCopperplateGrid(
     //   ctxRef,
@@ -103,54 +110,47 @@ const Canvas = () => {
     //   includeHorizontalLines,
     //   includeVerticalLines
     // );
-    drawBlackletterGrid(ctxRef, 2.4, canvasWidth/ scaleDown, canvasHeight/ scaleDown, 2.4*10, lineWidth / scaleDown);
+    drawBlackletterGrid(ctxRef, 2.4, width, height, 2.4*10, 1 );
   }, [
-    canvasWidth,
-    canvasHeight,
-    lineWidth,
-    verticalAngle,
-    verticalSpacing,
-    horizontalSpacing,
-    includeHorizontalLines,
-    includeVerticalLines,
-    selectedPageSize,
+    
     mm, // <= mm is not expected to change, nevertheless React feels better when its here
   ]);
 
-  const controlsOptions = {
-    includeVerticalLines,
-    includeHorizontalLines,
-    verticalAngle,
-    verticalSpacing,
-    horizontalSpacing,
-    selectedPageSize,
-    pageSizes,
-    lineWidth,
-    pageOrientation,
-    setLineWidth,
-    onOrientationChange,
-    onPageSizeChanged,
-    setIncludeVerticalLines,
-    setIncludeHorizontalLines,
-    setVerticalAngle,
-    setVerticalSpacing,
-    setHorizontalSpacing,
-    PrintCanvas,
-    CovnertToPDF,
-  };
+  // const controlsOptions = {
+  //   includeVerticalLines,
+  //   includeHorizontalLines,
+  //   verticalAngle,
+  //   verticalSpacing,
+  //   horizontalSpacing,
+  //   selectedPageSize,
+  //   pageSizes,
+  //   lineWidth,
+  //   pageOrientation,
+  //   setLineWidth,
+  //   onOrientationChange,
+  //   onPageSizeChanged,
+  //   setIncludeVerticalLines,
+  //   setIncludeHorizontalLines,
+  //   setVerticalAngle,
+  //   setVerticalSpacing,
+  //   setHorizontalSpacing,
+  //   PrintCanvas,
+  //   CovnertToPDF,
+  // };
 
   return (
     <div className="main-container">
       <div className="section canvas-container">
         <canvas
           id="canvas"
-          width={canvasWidth / scaleDown}
-          height={canvasHeight / scaleDown}
+          width={2480 / scaleDown}
+          height={3508 / scaleDown}
           ref={displayCanvasElement}
         ></canvas>
       </div>
       <div className="controls-container">
-        <Controls {...controlsOptions} />
+        <Controls />
+        {/* <BasicTabs/> */}
       </div>
     </div>
   );

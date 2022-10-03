@@ -1,30 +1,79 @@
+import { useState } from "react";
 import landscapeLogo from "../../Media/landscape-mode.png";
 import portpaitLogo from "../../Media/portrait-mode.png";
 import { ControlsProps, PageSize } from "../../Utils/types";
+import { CovnertToPDF, PrintCanvas } from "../../Utils/Utils";
+import consts from "../../Utils/Consts.json";
 import "./Controls.css";
 
-const Controls = (props: ControlsProps) => {
-  const {
-    includeVerticalLines,
-    includeHorizontalLines,
-    verticalAngle,
-    verticalSpacing,
-    horizontalSpacing,
-    selectedPageSize,
-    pageSizes,
-    lineWidth,
-    pageOrientation,
-    setLineWidth,
-    onOrientationChange,
-    onPageSizeChanged,
-    setIncludeVerticalLines,
-    setIncludeHorizontalLines,
-    setVerticalAngle,
-    setVerticalSpacing,
-    setHorizontalSpacing,
-    PrintCanvas,
-    CovnertToPDF,
-  } = props;
+const Controls = () => {
+  // const {
+  //   includeVerticalLines,
+  //   includeHorizontalLines,
+  //   verticalAngle,
+  //   verticalSpacing,
+  //   horizontalSpacing,
+  //   selectedPageSize,
+  //   pageSizes,
+  //   lineWidth,
+  //   pageOrientation,
+  //   setLineWidth,
+  //   onOrientationChange,
+  //   onPageSizeChanged,
+  //   setIncludeVerticalLines,
+  //   setIncludeHorizontalLines,
+  //   setVerticalAngle,
+  //   setVerticalSpacing,
+  //   setHorizontalSpacing,
+  //   PrintCanvas,
+  //   CovnertToPDF,
+  // } = props;
+
+  const pageSizes: Array<PageSize> = consts.pageSizes;
+  const defaultPage = pageSizes.find((p) => p.isDefault || p.size === "A4");
+
+  const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
+  const [pageOrientation, setPageOrientation] = useState("p"); //
+  const [canvasWidth, setCanvasWidth] = useState(defaultPage!.width);
+  const [canvasHeight, setCanvasHeight] = useState(defaultPage!.height);
+
+  const [includeVerticalLines, setIncludeVerticalLines] = useState(true);
+  const [verticalAngle, setVerticalAngle] = useState(55); //state is not needed here as the angle is not expected to change
+  const [verticalSpacing, setVerticalSpacing] = useState(7);
+
+  const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
+  const [horizontalSpacing, setHorizontalSpacing] = useState(5);
+
+  const [lineWidth, setLineWidth] = useState(1); //default is 1 px
+
+  //todo: page should be separated component
+  const onPageSizeChanged = (size: string) => {
+    const page = pageSizes.find((p) => p.size === size);
+    if (!page) return;
+
+    if (pageOrientation === "p") {
+      setCanvasWidth(page.width);
+      setCanvasHeight(page.height);
+    } else {
+      setCanvasWidth(page.height);
+      setCanvasHeight(page.width);
+    }
+
+    setSelectedPageSize(page.size);
+  };
+
+  const onOrientationChange = (mode: string) => {
+    setPageOrientation(mode);
+    const page = pageSizes.find((p) => p.size === selectedPageSize);
+    if (!page) return;
+    if (mode === "p") {
+      setCanvasWidth(page.width);
+      setCanvasHeight(page.height);
+    } else {
+      setCanvasWidth(page.height);
+      setCanvasHeight(page.width);
+    }
+  };
 
   return (
     <div className="inner-container">
@@ -170,8 +219,7 @@ const Controls = (props: ControlsProps) => {
               horizontalSpacing,
               verticalSpacing,
               includeHorizontalLines,
-              includeVerticalLines,
-              pageOrientation
+              includeVerticalLines
             );
           }}
         >

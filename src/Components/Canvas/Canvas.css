@@ -6,8 +6,6 @@
     #B0DBA7 <= Controls BG color 
     #8457EB <= buttons color
 */
-
-
 .main-container {
     display: flex;
     align-items: center;
@@ -30,6 +28,9 @@
     flex-direction: column;
     align-items: stretch; 
     height: 100%; /*<= this works only because the main-container's height is 100vh */
+    /* temp: */
+    margin: 75px;
+    padding-top: 75px;
 }
 
 .inner-container{
