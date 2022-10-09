@@ -1,7 +1,4 @@
 import { clearCanvas, drawLine, setLineSmoothness } from "./Utils";
-import consts from "./Consts.json";
-
-const mm = consts.mm;
 
 /**
  * acs,desc = 2.5 x nibSize
@@ -15,7 +12,6 @@ export const drawBlackletterGrid = (
   marginTop: number,
   strokeWidth: number
 ) => {
-
   clearCanvas(ctxRef, canvasWidth, canvasHeight);
 
   setLineSmoothness(ctxRef, strokeWidth);
@@ -29,6 +25,26 @@ export const drawBlackletterGrid = (
   }
 };
 
+export const prepareBlackLetterForPrinting = (
+  width: number,
+  height: number,
+  lineWidth: number,
+  nibSize: number,
+  marginTop: number
+) => {
+  const printableCanvas = document.createElement("canvas");
+  printableCanvas.width = width;
+  printableCanvas.height = height;
+  printableCanvas.id = "printable-canvas";
+
+  const pctx = printableCanvas.getContext("2d");
+  if (!pctx) return;
+
+  drawBlackletterGrid(pctx, nibSize, width, height, marginTop, lineWidth);
+
+  return printableCanvas;
+};
+
 /**
  * Draws ascender, body and descender
  */
@@ -39,11 +55,11 @@ const drawBlackletterLine = (
   canvasWidth: number,
   nibSize: number
 ) => {
-  drawLine(ctxRef, x1, y1, canvasWidth, y1, 1/3);
+  drawLine(ctxRef, x1, y1, canvasWidth, y1, 1 / 3);
   y1 = y1 + nibSize * 2.5;
-  drawLine(ctxRef, x1, y1, canvasWidth, y1, 1/3);
+  drawLine(ctxRef, x1, y1, canvasWidth, y1, 1 / 3);
   y1 = y1 + nibSize * 5;
-  drawLine(ctxRef, x1, y1, canvasWidth, y1, 1/3);
+  drawLine(ctxRef, x1, y1, canvasWidth, y1, 1 / 3);
   y1 = y1 + nibSize * 2.5;
-  drawLine(ctxRef, x1, y1, canvasWidth, y1, 1/3);
+  drawLine(ctxRef, x1, y1, canvasWidth, y1, 1 / 3);
 };

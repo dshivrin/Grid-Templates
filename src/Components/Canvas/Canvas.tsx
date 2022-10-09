@@ -1,25 +1,18 @@
-
-import { useEffect, useRef, useState } from "react";
-import { CovnertToPDF, PrintCanvas } from "../../Utils/Utils";
-import { drawCopperplateGrid } from "../../Utils/Copperplate";
-import consts from "../../Utils/Consts.json";
+import { useEffect, useRef } from "react";
+import { drawCopperplateGrid } from "Utils/Copperplate";
+import consts from "Utils/Consts.json";
 import Controls from "../Controls/Controls";
+import { drawBlackletterGrid } from "Utils/Blackletter";
+import { useAppSelector } from "state/hooks";
 import "./Canvas.css";
-import { PageSize } from "../../Utils/types";
-import { drawBlackletterGrid } from "../../Utils/Blackletter";
-
-import BasicTabs from '../Tabs/Tabs';
 
 /*
   TODO:
   1. Add form validation for all inputs
   2. Printing and exporting PDF in landscape mode 
-  3. Display canvas is not to scale
-  5. useMemo 
-  6. Add proper types
   7. Proper CSS, consider adding bootstrap before any changes
-  8. Add punctuated lines in between to distinguish the main line and asc+desc, 
-    divide the page to sections of 5 
+  8. In copperPlate add punctuated lines in between to distinguish the main line and asc+desc, 
+    divide the page to sections of 5  
 */
 
 //print is usually 300 dpi
@@ -31,127 +24,117 @@ import BasicTabs from '../Tabs/Tabs';
 const Canvas = () => {
   const scaleDown = consts.scaleDown;
   const mm = consts.mm;
-  const pageSizes: Array<PageSize> = consts.pageSizes;
-  const defaultPage = pageSizes.find((p) => p.isDefault || p.size === "A4");
 
-  // const [selectedPageSize, setSelectedPageSize] = useState(defaultPage!.size);
-  // const [pageOrientation, setPageOrientation] = useState("p"); //
-  // const [canvasWidth, setCanvasWidth] = useState(defaultPage!.width);
-  // const [canvasHeight, setCanvasHeight] = useState(defaultPage!.height);
+  //page:
+  const height = useAppSelector((state) => state.canvas.height);
+  const width = useAppSelector((state) => state.canvas.width);
+  const pageSize = useAppSelector((state) => state.canvas.pageSize);
+  const lineWidth = useAppSelector((state) => state.canvas.lineWidth);
+  const templateType = useAppSelector((state) => state.canvas.template);
+  const pageOrientation = useAppSelector(
+    (state) => state.canvas.pageOrientation
+  );
 
-  // const [includeVerticalLines, setIncludeVerticalLines] = useState(true);
-  // const [verticalAngle, setVerticalAngle] = useState(55); //state is not needed here as the angle is not expected to change
-  // const [verticalSpacing, setVerticalSpacing] = useState(7);
+  //copperplate
+  const includeVerticalLines = useAppSelector(
+    (state) => state.copperplate.drawVertical
+  );
+  const includeHorizontalLines = useAppSelector(
+    (state) => state.copperplate.drawHorizontal
+  );
+  const verticalAngle = useAppSelector((state) => state.copperplate.angle);
+  const verticalInterval = useAppSelector(
+    (state) => state.copperplate.verticaleInterval
+  );
+  const horizontalInterval = useAppSelector(
+    (state) => state.copperplate.horizontalInterval
+  );
 
-  // const [includeHorizontalLines, setIncludeHorizontalLines] = useState(true);
-  // const [horizontalSpacing, setHorizontalSpacing] = useState(5);
+  //BlackLetter:
+  const nibSize = useAppSelector((state) => state.blackLetter.nibSize);
 
-  // const [lineWidth, setLineWidth] = useState(1); //default is 1 px
-
+  //local
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
   let ctxRef = null;
-
-  // const onPageSizeChanged = (size: string) => {
-  //   const page = pageSizes.find((p) => p.size === size);
-  //   if (!page) return;
-
-  //   if (pageOrientation === "p") {
-  //     setCanvasWidth(page.width);
-  //     setCanvasHeight(page.height);
-  //   } else {
-  //     setCanvasWidth(page.height);
-  //     setCanvasHeight(page.width);
-  //   }
-
-  //   setSelectedPageSize(page.size);
-  // };
-
-  // const onOrientationChange = (mode: string) => {
-  //   setPageOrientation(mode);
-  //   const page = pageSizes.find((p) => p.size === selectedPageSize);
-  //   if (!page) return;
-  //   if (mode === "p") {
-  //     setCanvasWidth(page.width);
-  //     setCanvasHeight(page.height);
-  //   } else {
-  //     setCanvasWidth(page.height);
-  //     setCanvasHeight(page.width);
-  //   }
-  // };
 
   useEffect(() => {
     ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
     if (!ctxRef) return;
+
+    init(ctxRef);
+  }, [
+    templateType,
+    pageOrientation,
+    pageSize,
+    lineWidth,
+    includeVerticalLines,
+    includeHorizontalLines,
+    verticalInterval,
+    horizontalInterval,
+    nibSize,
+  ]);
+
+  const init = (ctxRef: CanvasRenderingContext2D) => {
+    console.log(templateType);
+    switch (templateType) {
+      case "BlackLetter":
+        drawBlackLetterTemplate(ctxRef);
+        break;
+      case "CopperPlate":
+        drawCopperPlateTemplate(ctxRef);
+        break;
+    }
+  };
+
+  const drawCopperPlateTemplate = (ctxRef: CanvasRenderingContext2D) => {
     let scale: number;
     let horizontal, vertical: number;
-
-    const width = displayCanvasElement.current!.width
-    const height = displayCanvasElement.current!.height
-
     if (height > width) {
       scale = height / width;
     } else {
       scale = width / height;
     }
 
-    horizontal = mm * 5 * scale;
-    vertical = mm * 7 * scale;
-    //debugger;
-    // drawCopperplateGrid(
-    //   ctxRef,
-    //   0,
-    //   mm / scaleDown,
-    //   verticalAngle,
-    //   canvasWidth / scaleDown,
-    //   canvasHeight / scaleDown,
-    //   lineWidth / scaleDown,
-    //   horizontal,
-    //   vertical,
-    //   includeHorizontalLines,
-    //   includeVerticalLines
-    // );
-    drawBlackletterGrid(ctxRef, 2.4, width, height, 2.4*10, 1 );
-  }, [
-    
-    mm, // <= mm is not expected to change, nevertheless React feels better when its here
-  ]);
+    horizontal = mm * horizontalInterval * scale;
+    vertical = mm * verticalInterval * scale;
 
-  // const controlsOptions = {
-  //   includeVerticalLines,
-  //   includeHorizontalLines,
-  //   verticalAngle,
-  //   verticalSpacing,
-  //   horizontalSpacing,
-  //   selectedPageSize,
-  //   pageSizes,
-  //   lineWidth,
-  //   pageOrientation,
-  //   setLineWidth,
-  //   onOrientationChange,
-  //   onPageSizeChanged,
-  //   setIncludeVerticalLines,
-  //   setIncludeHorizontalLines,
-  //   setVerticalAngle,
-  //   setVerticalSpacing,
-  //   setHorizontalSpacing,
-  //   PrintCanvas,
-  //   CovnertToPDF,
-  // };
+    drawCopperplateGrid(
+      ctxRef,
+      0,
+      mm / scaleDown,
+      verticalAngle,
+      width / scaleDown,
+      height / scaleDown,
+      lineWidth / scaleDown,
+      horizontal,
+      vertical,
+      includeHorizontalLines,
+      includeVerticalLines
+    );
+  };
+
+  const drawBlackLetterTemplate = (ctxRef: CanvasRenderingContext2D) => {
+    drawBlackletterGrid(
+      ctxRef,
+      nibSize,
+      width,
+      height,
+      nibSize * 10,
+      lineWidth
+    );
+  };
 
   return (
     <div className="main-container">
       <div className="section canvas-container">
         <canvas
           id="canvas"
-          width={2480 / scaleDown}
-          height={3508 / scaleDown}
+          width={width / scaleDown}
+          height={height / scaleDown}
           ref={displayCanvasElement}
         ></canvas>
       </div>
-      <div className="controls-container">
-        <Controls />
-        {/* <BasicTabs/> */}
-      </div>
+      <Controls />
     </div>
   );
 };

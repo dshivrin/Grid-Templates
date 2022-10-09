@@ -114,3 +114,49 @@ const drawCopperplateHorizontalLines = (
 const degreesToRadians = (degrees: number) => {
   return degrees * (Math.PI / 180);
 };
+
+export const prepareCopperPlateForPrinting = (
+  width: number,
+  height: number,
+  lineWidth: number,
+  angle: number,
+  horizontalInterval: number,
+  verticalInterval: number,
+  drawHorizontal: boolean,
+  drawVertical: boolean
+) => {
+  const printableCanvas = document.createElement("canvas");
+  printableCanvas.width = width;
+  printableCanvas.height = height;
+  printableCanvas.id = "printable-canvas";
+
+  const pctx = printableCanvas.getContext("2d");
+  if (!pctx) return;
+
+  let scale: number;
+  let horizontal, vertical: number;
+  if (height > width) {
+    scale = height / width;
+  } else {
+    scale = width / height;
+  }
+
+  horizontal = mm * horizontalInterval * scale;
+  vertical = mm * verticalInterval * scale;
+  //const scale = height / width * scaleDown;
+  
+  drawCopperplateGrid(
+    pctx,
+    0,
+    mm,
+    angle,
+    width,
+    height,
+    lineWidth,
+    horizontal,
+    vertical,
+    drawHorizontal,
+    drawVertical
+  );
+  return printableCanvas;
+};

@@ -3,12 +3,13 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { TabPanelProps, templateType } from "../../Utils/types";
+import CopperPlateControls from "../Controls/scripts/copperPlateControls";
+import { useAppSelector, useAppDispatch } from "../../state/hooks";
+import { onTemplateChanged } from "../../state/slices/canvasSlice";
+import BlackLetterControls from "../Controls/scripts/blackLetterControls";
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
+const dic = { 0: "copperPlate", 1: "blackLetter" };
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -23,7 +24,8 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          {/* <Typography>{children}</Typography> */}
+          {children}
         </Box>
       )}
     </div>
@@ -39,10 +41,13 @@ function a11yProps(index: number) {
 
 export default function BasicTabs(props: any) {
   const [value, setValue] = useState(0);
+  const dispatch = useAppDispatch();
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
-    //emit event
+    //todo: make dictionary or some type converter, because the tabs use numeric index
+    const type = (newValue ? "BlackLetter" : "CopperPlate") as templateType;
+    dispatch(onTemplateChanged(type));
   };
 
   return (
@@ -58,10 +63,10 @@ export default function BasicTabs(props: any) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        CopperPlate
+        <CopperPlateControls />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        BlackLetter
+        <BlackLetterControls />
       </TabPanel>
     </Box>
   );

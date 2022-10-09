@@ -7,12 +7,17 @@
     { "size": "A5", "width": 1748, "height": 2480, "isDefault": false },
     { "size": "A6", "width": 1240, "height": 1748, "isDefault": false }
   ],
-  "defaultValues":{
-    "copperPlate":{
-
+  "defaultValues": {
+    "copperPlate": {
+      "angle": 55,
+      "verticalSpacing": 7,
+      "horizontalSpacing":5,
+      "lineWidth":1,
+      "includeHorizontal":true,
+      "includeVertical":true
     },
-    "BlackLetter":{
-      
+    "BlackLetter": {
+      "nibSize": 2.4
     }
   }
 }
