@@ -41,7 +41,6 @@ const Footer = () => {
           nibSize,
           nibSize * 10
         );
-        PrintCanvas(pcanvas!);
         break;
       case "CopperPlate":
         pcanvas = prepareCopperPlateForPrinting(
@@ -54,9 +53,9 @@ const Footer = () => {
           drawHorizontal,
           drawVertical
         );
-        PrintCanvas(pcanvas!);
         break;
     }
+    PrintCanvas(pcanvas!);
   };
 
   const saveCanvasByTemplateType = () => {
@@ -70,7 +69,7 @@ const Footer = () => {
           nibSize,
           nibSize * 10
         );
-        SaveAsPDF(pcanvas!);
+
         break;
       case "CopperPlate":
         pcanvas = prepareCopperPlateForPrinting(
@@ -83,9 +82,9 @@ const Footer = () => {
           drawHorizontal,
           drawVertical
         );
-        SaveAsPDF(pcanvas!);
         break;
     }
+    SaveAsPDF(pcanvas!);
   };
 
   return (

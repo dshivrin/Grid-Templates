@@ -48,6 +48,7 @@ const CopperPlateControls = () => {
               id="vertical-spacing"
               min="1"
               max="10"
+              step="0.1"
               value={verticalSpacing}
               onChange={(event) => {
                 dispatch(onverticaleInterval(+event.target.value));
@@ -94,6 +95,7 @@ const CopperPlateControls = () => {
                 id="horizontal-spacing"
                 min="1"
                 max="15"
+                step="0.1"
                 value={horizontalSpacing}
                 disabled={!includeHorizontalLines}
                 onChange={(event) => {

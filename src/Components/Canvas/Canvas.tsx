@@ -75,7 +75,6 @@ const Canvas = () => {
   ]);
 
   const init = (ctxRef: CanvasRenderingContext2D) => {
-    console.log(templateType);
     switch (templateType) {
       case "BlackLetter":
         drawBlackLetterTemplate(ctxRef);
@@ -87,16 +86,19 @@ const Canvas = () => {
   };
 
   const drawCopperPlateTemplate = (ctxRef: CanvasRenderingContext2D) => {
-    let scale: number;
+    let hscale: number;
+    let vscale: number;
     let horizontal, vertical: number;
     if (height > width) {
-      scale = height / width;
+      hscale = width / height;
+      vscale = height / width;
     } else {
-      scale = width / height;
+      hscale = height / width;
+      vscale = 1;
     }
 
-    horizontal = mm * horizontalInterval * scale;
-    vertical = mm * verticalInterval * scale;
+    horizontal = mm * horizontalInterval * hscale;
+    vertical = mm * verticalInterval * vscale;
 
     drawCopperplateGrid(
       ctxRef,
@@ -116,10 +118,10 @@ const Canvas = () => {
   const drawBlackLetterTemplate = (ctxRef: CanvasRenderingContext2D) => {
     drawBlackletterGrid(
       ctxRef,
-      nibSize,
-      width,
-      height,
-      nibSize * 10,
+      nibSize * 2.5,//scale issue, same in print
+      width / scaleDown,
+      height / scaleDown,
+      nibSize * 15,
       lineWidth
     );
   };

@@ -2,6 +2,7 @@ import { clearCanvas, drawLine, setLineSmoothness } from "./Utils";
 import consts from "./Consts.json";
 
 const mm = consts.mm;
+const scaleDown = consts.scaleDown;
 
 export const drawCopperplateGrid = (
   ctxRef: CanvasRenderingContext2D,
@@ -133,18 +134,20 @@ export const prepareCopperPlateForPrinting = (
   const pctx = printableCanvas.getContext("2d");
   if (!pctx) return;
 
-  let scale: number;
+  let hscale: number;
+  let vscale: number;
   let horizontal, vertical: number;
   if (height > width) {
-    scale = height / width;
+    hscale = width / height;
+    vscale = height / width;
   } else {
-    scale = width / height;
+    hscale = height / width;
+    vscale = 1;
   }
 
-  horizontal = mm * horizontalInterval * scale;
-  vertical = mm * verticalInterval * scale;
-  //const scale = height / width * scaleDown;
-  
+  horizontal = mm * horizontalInterval * hscale * scaleDown;
+  vertical = mm * verticalInterval * vscale * scaleDown;
+
   drawCopperplateGrid(
     pctx,
     0,

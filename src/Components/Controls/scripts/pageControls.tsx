@@ -46,6 +46,7 @@ const PageControls = () => {
             type="number"
             min="1"
             max="5"
+            step="0.1"
             value={lineWidth}
             onChange={(event) => {
               dispatch(onLineWidthChange(+event.target.value));
