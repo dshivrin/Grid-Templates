@@ -3,11 +3,11 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { TabPanelProps, templateType } from "../../Utils/types";
-import CopperPlateControls from "../Controls/scripts/copperPlateControls";
-import { useAppSelector, useAppDispatch } from "../../state/hooks";
-import { onTemplateChanged } from "../../state/slices/canvasSlice";
-import BlackLetterControls from "../Controls/scripts/blackLetterControls";
+import { TabPanelProps, templateType } from "../../../Utils/types";
+import CopperPlateControls from "../../Controls/scripts/copperPlateControls";
+import { useAppSelector, useAppDispatch } from "../../../state/hooks";
+import { onTemplateChanged } from "../../../state/slices/canvasSlice";
+import BlackLetterControls from "../../Controls/scripts/blackLetterControls";
 
 const dic = { 0: "copperPlate", 1: "blackLetter" };
 

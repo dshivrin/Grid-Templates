@@ -3,7 +3,7 @@ import { PageSize } from "../../Utils/types";
 import {PrintCanvas_old } from "../../Utils/Utils";
 import consts from "../../Utils/Consts.json";
 import "./Controls.css";
-import BasicTabs from "../Tabs/Tabs";
+import BasicTabs from "../sheets-generator/Tabs/Tabs";
 import { CovnertToPDF_old } from './../../Utils/Utils';
 
 const Controls = () => {
