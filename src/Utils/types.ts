@@ -1,3 +1,5 @@
+import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+
 export type ControlsProps = {
   includeVerticalLines: boolean;
   includeHorizontalLines: boolean;
@@ -80,3 +82,7 @@ export type TabPanelProps = {
   index: number;
   value: number;
 };
+
+export interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}

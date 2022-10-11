@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { PageSize } from "../../Utils/types";
-import {PrintCanvas_old } from "../../Utils/Utils";
-import consts from "../../Utils/Consts.json";
+import { PageSize } from "Utils/types";
+import {PrintCanvas_old } from "Utils/Utils";
+import consts from "Utils/Consts.json";
 import "./Controls.css";
-import BasicTabs from "../sheets-generator/Tabs/Tabs";
-import { CovnertToPDF_old } from './../../Utils/Utils';
+import BasicTabs from "../Tabs/Tabs";
+import { CovnertToPDF_old } from 'Utils/Utils';
 
 const Controls = () => {
   const pageSizes: Array<PageSize> = consts.pageSizes;
@@ -24,40 +24,6 @@ const Controls = () => {
     <div className="controls-container">
       <div className="inner-container">
         <BasicTabs />
-        {/* <div className="footer">
-          <button
-            type="button"
-            className="button-46 print"
-            onClick={() => {
-              PrintCanvas_old(
-                selectedPageSize,
-                lineWidth,
-                horizontalSpacing,
-                verticalSpacing,
-                includeHorizontalLines,
-                includeVerticalLines
-              );
-            }}
-          >
-            Print
-          </button>
-          <button
-            type="button"
-            className="button-46 download"
-            onClick={() => {
-              CovnertToPDF_old(
-                selectedPageSize,
-                lineWidth,
-                horizontalSpacing,
-                verticalSpacing,
-                includeHorizontalLines,
-                includeVerticalLines
-              );
-            }}
-          >
-            Download
-          </button>
-        </div> */}
       </div>
     </div>
   );
