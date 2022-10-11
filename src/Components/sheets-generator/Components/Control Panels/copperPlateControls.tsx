@@ -6,7 +6,7 @@ import {
   onHorizontalInterval,
   onverticaleInterval,
 } from "state/slices/copperPlateSlice";
-import Footer from "../Footer";
+import Footer from "../Footer/Footer";
 
 const CopperPlateControls = () => {
   const dispatch = useAppDispatch();

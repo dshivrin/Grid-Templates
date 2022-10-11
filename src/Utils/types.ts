@@ -1,57 +1,19 @@
-import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 
-export type ControlsProps = {
-  includeVerticalLines: boolean;
-  includeHorizontalLines: boolean;
-  verticalAngle: number;
-  verticalSpacing: number;
-  horizontalSpacing: number;
-  selectedPageSize: string;
-  pageSizes: Array<PageSize>;
-  lineWidth: number;
-  pageOrientation: string;
-  setLineWidth: (width: number) => void;
-  onOrientationChange: (mode: string) => void;
-  onPageSizeChanged: (size: string) => void;
-  setIncludeVerticalLines: (p: boolean) => void;
-  setIncludeHorizontalLines: (p: boolean) => void;
-  setVerticalAngle: (size: number) => void;
-  setVerticalSpacing: (size: number) => void;
-  setHorizontalSpacing: (size: number) => void;
-  PrintCanvas: (
-    pageSize: string,
-    lineWidth: number,
-    horizontaleInterval: number,
-    verticaleInterval: number,
-    drawHorizontal: boolean,
-    drawVertical: boolean,
-    pageOrientation: string
-  ) => void;
-  CovnertToPDF: (
-    pageSize: string,
-    lineWidth: number,
-    horizontaleInterval: number,
-    verticaleInterval: number,
-    drawHorizontal: boolean,
-    drawVertical: boolean
-  ) => void;
+export type CanvasProps = {
+  canvasRef: React.RefObject<HTMLCanvasElement>;
 };
 
-export type PageSize = {
-  size: string;
-  width: number;
-  height: number;
-  isDefault: boolean;
-};
-
+//index signature
 export type TabsProps = {
-  ctxRef: CanvasRenderingContext2D;
-  canvasWidth: number;
-  canvasHeight: number;
+  tabs: { [name: string]: JSX.Element };
+  
 };
 
 export type pageSizes = "A4" | "A5" | "A6";
-export type templateType = "CopperPlate" | "BlackLetter";
+export type templateType = "CopperPlate" | "BlackLetter" |"Hebrew" | "Custom";
+export type pointedTemplateTypes = templateType | "CopperPlate" | "Modern";
+export type broadTemplateTypes = templateType ;
 
 export type canvasState = {
   width: number;
@@ -77,6 +39,13 @@ export type blackLetterState = {
   nibSize: number;
 };
 
+export type PageSize = {
+  size: string;
+  width: number;
+  height: number;
+  isDefault: boolean;
+};
+
 export type TabPanelProps = {
   children?: React.ReactNode;
   index: number;
@@ -86,3 +55,6 @@ export type TabPanelProps = {
 export interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
+
+
+

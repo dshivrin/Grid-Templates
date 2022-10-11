@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
-import { drawCopperplateGrid } from "Utils/Copperplate";
+import { drawCopperplateGrid } from "Utils/scripts/Copperplate";
 import consts from "Utils/Consts.json";
-import Controls from "../Controls/Controls";
-import { drawBlackletterGrid } from "Utils/Blackletter";
 import { useAppSelector } from "state/hooks";
-import "./Canvas.css";
+import Canvas from "../Components/Canvas/Canvas";
+import BasicTabs from "../Components/Tabs/Tabs";
+
+import CopperPlateControls from "../Components/Control Panels/copperPlateControls";
 
 /*
   TODO:
@@ -21,7 +22,7 @@ import "./Canvas.css";
 //A6 page size - 1748 x 1240 px (148 x 105 mm)
 //1 cm = 37.7952755906
 
-const Canvas = () => {
+const PointedNib = () => {
   const scaleDown = consts.scaleDown;
   const mm = consts.mm;
 
@@ -50,9 +51,6 @@ const Canvas = () => {
     (state) => state.copperplate.horizontalInterval
   );
 
-  //BlackLetter:
-  const nibSize = useAppSelector((state) => state.blackLetter.nibSize);
-
   //local
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
   let ctxRef = null;
@@ -61,7 +59,7 @@ const Canvas = () => {
     ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
     if (!ctxRef) return;
 
-    init(ctxRef);
+    drawCopperPlateTemplate(ctxRef);
   }, [
     templateType,
     pageOrientation,
@@ -71,19 +69,7 @@ const Canvas = () => {
     includeHorizontalLines,
     verticalInterval,
     horizontalInterval,
-    nibSize,
   ]);
-
-  const init = (ctxRef: CanvasRenderingContext2D) => {
-    switch (templateType) {
-      case "BlackLetter":
-        drawBlackLetterTemplate(ctxRef);
-        break;
-      case "CopperPlate":
-        drawCopperPlateTemplate(ctxRef);
-        break;
-    }
-  };
 
   const drawCopperPlateTemplate = (ctxRef: CanvasRenderingContext2D) => {
     let hscale: number;
@@ -115,30 +101,18 @@ const Canvas = () => {
     );
   };
 
-  const drawBlackLetterTemplate = (ctxRef: CanvasRenderingContext2D) => {
-    drawBlackletterGrid(
-      ctxRef,
-      nibSize * 2.5,//scale issue, same in print
-      width / scaleDown,
-      height / scaleDown,
-      nibSize * 15,
-      lineWidth
-    );
+  const tabs = {
+    "CopperPlate": <CopperPlateControls />,
+    "Modern": <CopperPlateControls />,
+    "Custom": <CopperPlateControls />,
   };
 
   return (
     <div className="main-container">
-      <div className="section canvas-container">
-        <canvas
-          id="canvas"
-          width={width / scaleDown}
-          height={height / scaleDown}
-          ref={displayCanvasElement}
-        ></canvas>
-      </div>
-      <Controls />
+      <Canvas canvasRef={displayCanvasElement} />
+      <BasicTabs tabs={tabs} />
     </div>
   );
 };
 
-export default Canvas;
+export default PointedNib;

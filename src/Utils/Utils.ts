@@ -1,10 +1,6 @@
 import { jsPDF } from "jspdf";
 import printJS from "print-js";
-import { drawCopperplateGrid } from "./Copperplate";
-import consts from "./Consts.json";
 
-const mm = consts.mm;
-const scaleDown = consts.scaleDown;
 export const setLineSmoothness = (
   ctxRef: CanvasRenderingContext2D,
   lineWidth: number
@@ -62,100 +58,4 @@ export const PrintCanvas = (canvas: HTMLCanvasElement) => {
   printJS(canvas.toDataURL(), "image");
 };
 
-/**
- * 
----------------------TO BE REMOVED---------------------
- * 
- */
-//todo: pass the grid method as well
-const prepareForPrinting_old = (
-  width: number,
-  height: number,
-  lineWidth: number,
-  horizontaleInterval: number,
-  verticaleInterval: number,
-  drawHorizontal: boolean,
-  drawVertical: boolean
-) => {
-  const printableCanvas = document.createElement("canvas");
-  printableCanvas.width = width;
-  printableCanvas.height = height;
-  printableCanvas.id = "printable-canvas";
 
-  const pctx = printableCanvas.getContext("2d");
-  if (!pctx) return;
-  const scale = (height / width) * scaleDown;
-  debugger;
-  drawCopperplateGrid(
-    pctx,
-    0,
-    mm,
-    55,
-    width,
-    height,
-    lineWidth,
-    mm * horizontaleInterval * scale,
-    mm * verticaleInterval * scale,
-    drawHorizontal,
-    drawVertical
-  );
-  return printableCanvas;
-};
-
-//See docs https://printjs.crabbly.com/
-export const PrintCanvas_old = (
-  pageSize: string,
-  lineWidth: number,
-  horizontaleInterval: number,
-  verticaleInterval: number,
-  drawHorizontal: boolean,
-  drawVertical: boolean
-) => {
-  const page = consts.pageSizes.find((p) => p.size === pageSize);
-  if (!page) return;
-  const printableCanvas = prepareForPrinting_old(
-    page.width,
-    page.height,
-    lineWidth,
-    horizontaleInterval,
-    verticaleInterval,
-    drawHorizontal,
-    drawVertical
-  );
-
-  //TODO: try removing all the garbage that this library adds
-  printJS(printableCanvas!.toDataURL(), "image");
-};
-
-export const CovnertToPDF_old = (
-  pageSize: string,
-  lineWidth: number,
-  horizontaleInterval: number,
-  verticaleInterval: number,
-  drawHorizontal: boolean,
-  drawVertical: boolean
-) => {
-  const page = consts.pageSizes.find((p) => p.size === pageSize);
-  if (!page) return;
-  let pdf: jsPDF;
-  //set the orientation
-  if (page.width > page.height) {
-    pdf = new jsPDF("l", "px", [page.width, page.height]); //landscape
-  } else {
-    pdf = new jsPDF("p", "px", [page.height, page.width]); //portrait
-  }
-  //then we get the dimensions from the 'pdf' file itself
-  const printableCanvas = prepareForPrinting_old(
-    page.width,
-    page.height,
-    lineWidth,
-    horizontaleInterval,
-    verticaleInterval,
-    drawHorizontal,
-    drawVertical
-  );
-  const cw = pdf.internal.pageSize.getWidth();
-  const ch = pdf.internal.pageSize.getHeight();
-  pdf.addImage(printableCanvas!.toDataURL(), "PNG", 0, 0, cw, ch);
-  pdf.save("download.pdf");
-};

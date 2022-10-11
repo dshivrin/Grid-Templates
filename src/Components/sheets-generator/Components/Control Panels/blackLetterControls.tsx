@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "state/hooks";
 import { onNibSizeChanged } from "state/slices/blackLetterSlice";
-import Footer from "../Footer";
+import Footer from "../Footer/Footer";
 import PageControls from "./pageControls";
 
 const BlackLetterControls = () => {

@@ -1,5 +1,5 @@
-import { clearCanvas, drawLine, setLineSmoothness } from "./Utils";
-import consts from "./Consts.json";
+import { clearCanvas, drawLine, setLineSmoothness } from "../Utils";
+import consts from "../Consts.json";
 
 const mm = consts.mm;
 const scaleDown = consts.scaleDown;
@@ -28,7 +28,6 @@ export const drawBlackletterGrid = (
    * //
    * (canvasHeight - marginTop) / (asc + main + desc + spacing)
    */
-  debugger;
   while (y1 + lineWidth + lineSpacing < canvasHeight) {
     drawBlackletterLine(ctxRef, x1, y1, canvasWidth, nibSize);
     y1 = y1 + lineWidth * 2;

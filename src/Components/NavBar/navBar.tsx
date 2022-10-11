@@ -22,8 +22,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import { AppBarProps } from "Utils/types";
 import { Routes , Route, Link, BrowserRouter } from "react-router-dom";
 import Home from "Components/Home/home";
-import Canvas from "Components/sheets-generator/Canvas/Canvas";
 import About from "Components/About/about";
+import Canvas from "Components/sheets-generator/Components/Canvas/Canvas";
+import PointedNib from '../sheets-generator/pointed-nib/PointedNib';
+import BroadPen from './../sheets-generator/broad-pen/BroadPen';
 
 const drawerWidth = 240;
 
@@ -139,7 +141,7 @@ export default function MiniDrawer() {
           </DrawerHeader>
           <Divider />
           <List>
-            {["Home", "Canvas"].map((text, index) => (
+            {["Home", "Pointed Pen", "Broad Nib"].map((text, index) => (
               <ListItem key={text} component={Link} to={"/" + text} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   sx={{
@@ -193,7 +195,8 @@ export default function MiniDrawer() {
           <Routes>
             <Route path="/" element={<Home/>} />
             <Route path="/home" element={<Home/>} />
-            <Route path="/canvas" element={<Canvas/>}/>
+            <Route path="/Pointed Pen" element={<PointedNib/>}/>
+            <Route path="/Broad Nib" element={<BroadPen/>}/>
             <Route path="/about" element={<About/>} />
           </Routes>
         </Box>

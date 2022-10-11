@@ -1,5 +1,5 @@
-import { clearCanvas, drawLine, setLineSmoothness } from "./Utils";
-import consts from "./Consts.json";
+import { clearCanvas, drawLine, setLineSmoothness } from "../Utils";
+import consts from "../Consts.json";
 
 const mm = consts.mm;
 const scaleDown = consts.scaleDown;

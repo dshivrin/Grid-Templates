@@ -3,11 +3,9 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { TabPanelProps, templateType } from "../../../Utils/types";
-import CopperPlateControls from "../Controls/scripts/copperPlateControls";
-import { useAppSelector, useAppDispatch } from "../../../state/hooks";
-import { onTemplateChanged } from "../../../state/slices/canvasSlice";
-import BlackLetterControls from "../Controls/scripts/blackLetterControls";
+import { TabPanelProps, TabsProps, templateType } from "Utils/types";
+import { useAppDispatch } from "state/hooks";
+import { onTemplateChanged } from "state/slices/canvasSlice";
 
 const dic = { 0: "copperPlate", 1: "blackLetter" };
 
@@ -39,9 +37,11 @@ function a11yProps(index: number) {
   };
 }
 
-export default function BasicTabs(props: any) {
+export default function BasicTabs(props: TabsProps) {
   const [value, setValue] = useState(0);
   const dispatch = useAppDispatch();
+
+  const { tabs } = props;
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -51,23 +51,30 @@ export default function BasicTabs(props: any) {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="CopperPlate" {...a11yProps(0)} />
-          <Tab label="BlackLetter" {...a11yProps(1)} />
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-        <CopperPlateControls />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <BlackLetterControls />
-      </TabPanel>
-    </Box>
+    <div className="controls-container">
+      <div className="inner-container">
+        <Box sx={{ width: "100%" }}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
+              {Object.keys(tabs).map((t, index) => {
+                return <Tab label={t} {...a11yProps(index)} />;
+              })}
+            </Tabs>
+          </Box>
+
+          {Object.keys(tabs).map((t, index) => {
+            return (
+              <TabPanel value={value} index={index}>
+                {tabs[t]}
+              </TabPanel>
+            );
+          })}
+        </Box>
+      </div>
+    </div>
   );
 }

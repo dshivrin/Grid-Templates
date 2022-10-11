@@ -1,6 +1,6 @@
 import { useAppSelector } from "state/hooks";
-import { prepareBlackLetterForPrinting } from "Utils/Blackletter";
-import { prepareCopperPlateForPrinting } from "Utils/Copperplate";
+import { prepareBlackLetterForPrinting } from "Utils/scripts/Blackletter";
+import { prepareCopperPlateForPrinting } from "Utils/scripts/Copperplate";
 import { PrintCanvas, SaveAsPDF } from "Utils/Utils";
 
 const Footer = () => {
@@ -31,7 +31,7 @@ const Footer = () => {
   const nibSize = useAppSelector((state) => state.blackLetter.nibSize);
 
   const printCanvasByTemplateType = () => {
-    let pcanvas;
+    let pcanvas : HTMLCanvasElement | undefined;
     switch (templateType) {
       case "BlackLetter":
         pcanvas = prepareBlackLetterForPrinting(
@@ -59,7 +59,7 @@ const Footer = () => {
   };
 
   const saveCanvasByTemplateType = () => {
-    let pcanvas;
+    let pcanvas : HTMLCanvasElement | undefined;
     switch (templateType) {
       case "BlackLetter":
         pcanvas = prepareBlackLetterForPrinting(
