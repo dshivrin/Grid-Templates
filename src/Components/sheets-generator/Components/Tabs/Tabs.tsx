@@ -30,10 +30,11 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: number) {
+function a11yProps(index: number, name: string) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
+    "template-type": name,
   };
 }
 
@@ -42,11 +43,13 @@ export default function BasicTabs(props: TabsProps) {
   const dispatch = useAppDispatch();
 
   const { tabs } = props;
+  //SyntheticEvent is a wierd creature that misses lots of properties for some reson
+  const onTabChanged = (event: any, newIndex: number) => {
+    setValue(newIndex);
 
-  const handleChange = (event: SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-    //todo: make dictionary or some type converter, because the tabs use numeric index
-    const type = (newValue ? "BlackLetter" : "CopperPlate") as templateType;
+    const type =
+      (event.currentTarget.attributes[`template-type`].value as templateType) ||
+      "";
     dispatch(onTemplateChanged(type));
   };
 
@@ -57,11 +60,11 @@ export default function BasicTabs(props: TabsProps) {
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
               value={value}
-              onChange={handleChange}
+              onChange={onTabChanged}
               aria-label="basic tabs example"
             >
               {Object.keys(tabs).map((t, index) => {
-                return <Tab label={t} {...a11yProps(index)} />;
+                return <Tab label={t} {...a11yProps(index, t)} />;
               })}
             </Tabs>
           </Box>

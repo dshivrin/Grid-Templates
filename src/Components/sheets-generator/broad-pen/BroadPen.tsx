@@ -23,7 +23,6 @@ import BlackLetterControls from "../Components/Control Panels/blackLetterControl
 
 const BroadPen = () => {
   const scaleDown = consts.scaleDown;
-  const mm = consts.mm;
 
   //page:
   const height = useAppSelector((state) => state.canvas.height);
