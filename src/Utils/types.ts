@@ -11,7 +11,7 @@ export type TabsProps = {
 };
 
 export type pageSizes = "A4" | "A5" | "A6";
-export type templateType = "CopperPlate" | "BlackLetter" |"Hebrew" | "Custom";
+export type templateType = "CopperPlate" | "BlackLetter" |"Hebrew" | "Custom" | "Pointed Nib" | "Broad Nib";
 export type pointedTemplateTypes = templateType | "CopperPlate" | "Modern";
 export type broadTemplateTypes = templateType ;
 

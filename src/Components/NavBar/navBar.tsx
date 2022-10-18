@@ -23,9 +23,7 @@ import { AppBarProps } from "Utils/types";
 import { Routes , Route, Link, BrowserRouter } from "react-router-dom";
 import Home from "Components/Home/home";
 import About from "Components/About/about";
-import Canvas from "Components/sheets-generator/Components/Canvas/Canvas";
-import PointedNib from '../sheets-generator/pointed-nib/PointedNib';
-import BroadPen from './../sheets-generator/broad-pen/BroadPen';
+import Calligrapgy from '../sheets-generator/Calligrapgy/Calligraphy';
 
 const drawerWidth = 240;
 
@@ -141,7 +139,7 @@ export default function MiniDrawer() {
           </DrawerHeader>
           <Divider />
           <List>
-            {["Home", "Pointed Pen", "Broad Nib"].map((text, index) => (
+            {["Home", "Calligraphy Sheets", "Shapes"].map((text, index) => (
               <ListItem key={text} component={Link} to={"/" + text} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   sx={{
@@ -195,8 +193,8 @@ export default function MiniDrawer() {
           <Routes>
             <Route path="/" element={<Home/>} />
             <Route path="/home" element={<Home/>} />
-            <Route path="/Pointed Pen" element={<PointedNib/>}/>
-            <Route path="/Broad Nib" element={<BroadPen/>}/>
+            <Route path="/Calligraphy Sheets" element={<Calligrapgy/>}/>
+            <Route path="/Shapes" element={<Calligrapgy/>}/>
             <Route path="/about" element={<About/>} />
           </Routes>
         </Box>

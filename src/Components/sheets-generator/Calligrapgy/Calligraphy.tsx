@@ -6,6 +6,8 @@ import Canvas from "../Components/Canvas/Canvas";
 import BasicTabs from "../Components/Tabs/Tabs";
 
 import CopperPlateControls from "../Components/Control Panels/copperPlateControls";
+import BlackLetterControls from "../Components/Control Panels/blackLetterControls";
+import { drawBlackletterGrid } from "Utils/scripts/Blackletter";
 
 /*
   TODO:
@@ -22,7 +24,7 @@ import CopperPlateControls from "../Components/Control Panels/copperPlateControl
 //A6 page size - 1748 x 1240 px (148 x 105 mm)
 //1 cm = 37.7952755906
 
-const PointedNib = () => {
+const Calligraphy = () => {
   const scaleDown = consts.scaleDown;
   const mm = consts.mm;
 
@@ -36,7 +38,7 @@ const PointedNib = () => {
     (state) => state.canvas.pageOrientation
   );
 
-  //copperplate
+  //pointed nib
   const includeVerticalLines = useAppSelector(
     (state) => state.copperplate.drawVertical
   );
@@ -51,7 +53,10 @@ const PointedNib = () => {
     (state) => state.copperplate.horizontalInterval
   );
 
-  //local
+  //broad nib
+  const nibSize = useAppSelector((state) => state.blackLetter.nibSize);
+
+  //canvas
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
   let ctxRef = null;
 
@@ -59,7 +64,7 @@ const PointedNib = () => {
     ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
     if (!ctxRef) return;
 
-    drawCopperPlateTemplate(ctxRef);
+    init(ctxRef);
   }, [
     templateType,
     pageOrientation,
@@ -71,10 +76,19 @@ const PointedNib = () => {
     horizontalInterval,
   ]);
 
+  const init = (ctxRef: CanvasRenderingContext2D) => {
+    switch (templateType) {
+      case "Broad Nib":
+        drawBlackLetterTemplate(ctxRef);
+        break;
+      case "Pointed Nib":
+        drawCopperPlateTemplate(ctxRef);
+    }
+  };
+
+  //private methods
   const drawCopperPlateTemplate = (ctxRef: CanvasRenderingContext2D) => {
-    let hscale: number;
-    let vscale: number;
-    let horizontal, vertical: number;
+    let hscale, vscale, horizontal, vertical: number;
     if (height > width) {
       hscale = width / height;
       vscale = height / width;
@@ -101,10 +115,20 @@ const PointedNib = () => {
     );
   };
 
+  const drawBlackLetterTemplate = (ctxRef: CanvasRenderingContext2D) => {
+    drawBlackletterGrid(
+      ctxRef,
+      nibSize * 2.5,//scale issue, same in print
+      width / scaleDown,
+      height / scaleDown,
+      nibSize * 15,
+      lineWidth
+    );
+  };
+
   const tabs = {
-    "CopperPlate": <CopperPlateControls />,
-    "Modern": <CopperPlateControls />,
-    "Custom": <CopperPlateControls />,
+    "Pointed Nib": <CopperPlateControls />,
+    "Broad Nib": <BlackLetterControls />,
   };
 
   return (
@@ -115,4 +139,4 @@ const PointedNib = () => {
   );
 };
 
-export default PointedNib;
+export default Calligraphy;

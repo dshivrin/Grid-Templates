@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from "react";
+import { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -6,8 +6,6 @@ import Box from "@mui/material/Box";
 import { TabPanelProps, TabsProps, templateType } from "Utils/types";
 import { useAppDispatch } from "state/hooks";
 import { onTemplateChanged } from "state/slices/canvasSlice";
-
-const dic = { 0: "copperPlate", 1: "blackLetter" };
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -22,8 +20,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          {/* <Typography>{children}</Typography> */}
-          {children}
+          <Typography>{children}</Typography>
         </Box>
       )}
     </div>
