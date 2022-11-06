@@ -12,7 +12,7 @@ const Footer = () => {
   //const pageOrientation = useAppSelector((state) => state.canvas.pageOrientation); //?
   const templateType = useAppSelector((state) => state.canvas.template);
 
-  //copperPlate props
+  //poined nib
   const angle = useAppSelector((state) => state.copperplate.angle);
   const drawHorizontal = useAppSelector(
     (state) => state.copperplate.drawHorizontal
@@ -27,22 +27,39 @@ const Footer = () => {
     (state) => state.copperplate.verticaleInterval
   );
 
-  //BlackLetter props
+  //broad nib
   const nibSize = useAppSelector((state) => state.blackLetter.nibSize);
+  const marginTop = useAppSelector((state) => state.blackLetter.marginTop);
+  const bodySize = useAppSelector((state) => state.blackLetter.bodySize);
+  const lineSpacing = useAppSelector((state) => state.blackLetter.lineSpacing);
+  const trailingSize = useAppSelector(
+    (state) => state.blackLetter.trailingSize
+  );
+  const drawAccender = useAppSelector(
+    (state) => state.blackLetter.drawAccender
+  );
+  const drawDescender = useAppSelector(
+    (state) => state.blackLetter.drawDescender
+  );
 
   const printCanvasByTemplateType = () => {
     let pcanvas : HTMLCanvasElement | undefined;
     switch (templateType) {
-      case "BlackLetter":
+      case "Broad Nib":
         pcanvas = prepareBlackLetterForPrinting(
           width,
           height,
           lineWidth,
           nibSize,
-          nibSize * 10
+          marginTop,
+          bodySize,
+          trailingSize,
+          lineSpacing,
+          drawAccender,
+          drawDescender
         );
         break;
-      case "CopperPlate":
+      case "Pointed Nib":
         pcanvas = prepareCopperPlateForPrinting(
           width,
           height,
@@ -61,17 +78,21 @@ const Footer = () => {
   const saveCanvasByTemplateType = () => {
     let pcanvas : HTMLCanvasElement | undefined;
     switch (templateType) {
-      case "BlackLetter":
+      case "Broad Nib":
         pcanvas = prepareBlackLetterForPrinting(
           width,
           height,
           lineWidth,
           nibSize,
-          nibSize * 10
+          marginTop,
+          bodySize,
+          trailingSize,
+          lineSpacing,
+          drawAccender,
+          drawDescender
         );
-
         break;
-      case "CopperPlate":
+      case "Pointed Nib":
         pcanvas = prepareCopperPlateForPrinting(
           width,
           height,

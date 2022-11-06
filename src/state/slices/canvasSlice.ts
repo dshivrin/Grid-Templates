@@ -13,7 +13,7 @@ const initialState: canvasState = {
   width: defaultPage!.width,
   pageOrientation: "p",
   pageSize: "A4",
-  template: "CopperPlate",
+  template: "Pointed Nib",
   lineWidth: 1,
 };
 

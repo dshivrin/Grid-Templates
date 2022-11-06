@@ -18,12 +18,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import { AppBarProps } from "Utils/types";
-import { Routes , Route, Link, BrowserRouter } from "react-router-dom";
+import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
 import Home from "Components/Home/home";
 import About from "Components/About/about";
-import Calligrapgy from '../sheets-generator/Calligrapgy/Calligraphy';
+import Calligrapgy from "../sheets-generator/Calligrapgy/Calligraphy";
+import Shapes from "Components/sheets-generator/Shapes/Shapes";
 
 const drawerWidth = 240;
 
@@ -140,7 +141,13 @@ export default function MiniDrawer() {
           <Divider />
           <List>
             {["Home", "Calligraphy Sheets", "Shapes"].map((text, index) => (
-              <ListItem key={text} component={Link} to={"/" + text} disablePadding sx={{ display: "block" }}>
+              <ListItem
+                key={text}
+                component={Link}
+                to={"/" + text}
+                disablePadding
+                sx={{ display: "block" }}
+              >
                 <ListItemButton
                   sx={{
                     minHeight: 48,
@@ -165,7 +172,13 @@ export default function MiniDrawer() {
           <Divider />
           <List>
             {["About"].map((text, index) => (
-              <ListItem key={text} component={Link} to={"/" + text} disablePadding sx={{ display: "block" }}>
+              <ListItem
+                key={text}
+                component={Link}
+                to={"/" + text}
+                disablePadding
+                sx={{ display: "block" }}
+              >
                 <ListItemButton
                   sx={{
                     minHeight: 48,
@@ -191,11 +204,11 @@ export default function MiniDrawer() {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
           <Routes>
-            <Route path="/" element={<Home/>} />
-            <Route path="/home" element={<Home/>} />
-            <Route path="/Calligraphy Sheets" element={<Calligrapgy/>}/>
-            <Route path="/Shapes" element={<Calligrapgy/>}/>
-            <Route path="/about" element={<About/>} />
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/Calligraphy Sheets" element={<Calligrapgy />} />
+            <Route path="/Shapes" element={<Shapes />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </Box>
       </BrowserRouter>

@@ -11,13 +11,19 @@
     "copperPlate": {
       "angle": 55,
       "verticalSpacing": 7.0,
-      "horizontalSpacing":5.0,
-      "lineWidth":1.1,
-      "includeHorizontal":true,
-      "includeVertical":true
+      "horizontalSpacing": 5.0,
+      "lineWidth": 1.1,
+      "includeHorizontal": true,
+      "includeVertical": true
     },
     "BlackLetter": {
-      "nibSize": 2.4
+      "nibSize": 2.4,
+      "marginTop": 10,
+      "bodySize": 5,
+      "trailingSize": 2.5,
+      "lineSpacing": 10,
+      "drawAccender": true,
+      "drawDescender": true
     }
   }
 }

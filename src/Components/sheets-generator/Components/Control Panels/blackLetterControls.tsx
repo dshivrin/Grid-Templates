@@ -1,11 +1,41 @@
 import { useAppDispatch, useAppSelector } from "state/hooks";
-import { onNibSizeChanged } from "state/slices/blackLetterSlice";
+import {
+  onNibSizeChanged,
+  onMarginTopChanged,
+  onBodySizeChanged,
+  onTrailingSizeChanged,
+  onLineSpacingChanged,
+  onDrawAccenderChanged,
+  onDrawDescenderChanged,
+} from "state/slices/blackLetterSlice";
 import Footer from "../Footer/Footer";
 import PageControls from "./pageControls";
 
 const BlackLetterControls = () => {
   const dispatch = useAppDispatch();
   const nibSize = useAppSelector((state) => state.blackLetter.nibSize);
+  const marginTop = useAppSelector((state) => state.blackLetter.marginTop);
+  const bodySize = useAppSelector((state) => state.blackLetter.bodySize);
+  const trailingSize = useAppSelector(
+    (state) => state.blackLetter.trailingSize
+  );
+  const lineSpacing = useAppSelector((state) => state.blackLetter.lineSpacing);
+  const drawAccender = useAppSelector(
+    (state) => state.blackLetter.drawAccender
+  );
+  const drawDescender = useAppSelector(
+    (state) => state.blackLetter.drawDescender
+  );
+
+  const handleDrawAccenderChanged = (event: any) => {
+    const checked = Boolean(event.target.checked);
+    dispatch(onDrawAccenderChanged(checked));
+  };
+
+  const handleDrawDescenderChanged = (event: any) => {
+    const checked = Boolean(event.target.checked);
+    dispatch(onDrawDescenderChanged(checked));
+  };
 
   return (
     <div>
@@ -26,8 +56,74 @@ const BlackLetterControls = () => {
           />{" "}
           mm
         </div>
+        <div>
+          <label>Margin Top: </label>
+          <input
+            type="number"
+            id="margin-top"
+            step="0.1"
+            value={marginTop}
+            onChange={(event) => {
+              dispatch(onMarginTopChanged(+event.target.value));
+            }}
+          />{" "}
+        </div>
+        <div>
+          <label>Body Size: </label>
+          <input
+            type="number"
+            id="body-size"
+            step="0.1"
+            value={bodySize}
+            onChange={(event) => {
+              dispatch(onBodySizeChanged(+event.target.value));
+            }}
+          />{" "}
+        </div>
+        <div>
+          <label>Assender / Descender size: </label>
+          <input
+            type="number"
+            id="body-size"
+            step="0.1"
+            value={trailingSize}
+            onChange={(event) => {
+              dispatch(onTrailingSizeChanged(+event.target.value));
+            }}
+          />{" "}
+        </div>
+        <div>
+          <label>Line Spacing: </label>
+          <input
+            type="number"
+            id="body-size"
+            step="0.1"
+            value={lineSpacing}
+            onChange={(event) => {
+              dispatch(onLineSpacingChanged(+event.target.value));
+            }}
+          />{" "}
+        </div>
+        <div>
+          <label>Include Accender: </label>
+          <input
+            type="checkbox"
+            id="body-size"
+            checked={drawAccender}
+            onChange={handleDrawAccenderChanged}
+          />{" "}
+        </div>
+        <div>
+          <label>Include Accender: </label>
+          <input
+            type="checkbox"
+            id="body-size"
+            checked={drawDescender}
+            onChange={handleDrawDescenderChanged}
+          />{" "}
+        </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

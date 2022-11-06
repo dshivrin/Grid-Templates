@@ -55,6 +55,18 @@ const Calligraphy = () => {
 
   //broad nib
   const nibSize = useAppSelector((state) => state.blackLetter.nibSize);
+  const marginTop = useAppSelector((state) => state.blackLetter.marginTop);
+  const bodySize = useAppSelector((state) => state.blackLetter.bodySize);
+  const lineSpacing = useAppSelector((state) => state.blackLetter.lineSpacing);
+  const trailingSize = useAppSelector(
+    (state) => state.blackLetter.trailingSize
+  );
+  const drawAccender = useAppSelector(
+    (state) => state.blackLetter.drawAccender
+  );
+  const drawDescender = useAppSelector(
+    (state) => state.blackLetter.drawDescender
+  );
 
   //canvas
   const displayCanvasElement = useRef<HTMLCanvasElement>(null);
@@ -74,6 +86,13 @@ const Calligraphy = () => {
     includeHorizontalLines,
     verticalInterval,
     horizontalInterval,
+    //
+    marginTop,
+    bodySize,
+    lineSpacing,
+    trailingSize,
+    drawAccender,
+    drawDescender,
   ]);
 
   const init = (ctxRef: CanvasRenderingContext2D) => {
@@ -83,6 +102,7 @@ const Calligraphy = () => {
         break;
       case "Pointed Nib":
         drawCopperPlateTemplate(ctxRef);
+        break;
     }
   };
 
@@ -118,11 +138,16 @@ const Calligraphy = () => {
   const drawBlackLetterTemplate = (ctxRef: CanvasRenderingContext2D) => {
     drawBlackletterGrid(
       ctxRef,
-      nibSize * 2.5,//scale issue, same in print
+      nibSize * 2.5, //scale issue, same in print
       width / scaleDown,
       height / scaleDown,
-      nibSize * 15,
-      lineWidth
+      marginTop,
+      bodySize,
+      trailingSize,
+      lineWidth,
+      lineSpacing,
+      drawAccender,
+      drawDescender
     );
   };
 
