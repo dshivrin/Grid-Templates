@@ -7,7 +7,6 @@ export type CanvasProps = {
 //index signature
 export type TabsProps = {
   tabs: { [name: string]: JSX.Element };
-  
 };
 
 export type pageSizes = "A4" | "A5" | "A6";

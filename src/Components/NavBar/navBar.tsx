@@ -16,17 +16,23 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import HomeIcon from "@mui/icons-material/Home";
 import { AppBarProps } from "Utils/types";
 import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
 import Home from "Components/Home/home";
 import About from "Components/About/about";
 import Calligrapgy from "../sheets-generator/Calligrapgy/Calligraphy";
 import Shapes from "Components/sheets-generator/Shapes/Shapes";
+//icons
+import HomeIcon from "Media/home.png";
+import CalligraphyIcon from "Media/calligraphy.png";
+import ShapesIcon from "Media/shapes.png";
+import AboutIcon from "Media/about.png";
 
 const drawerWidth = 240;
+const TopMenusIcons = [HomeIcon , CalligraphyIcon, ShapesIcon]
+
+const bottomMenuIcons = [AboutIcon]
+ 
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -162,7 +168,7 @@ export default function MiniDrawer() {
                       justifyContent: "center",
                     }}
                   >
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {<img width="30" height="30" src={TopMenusIcons[index]}/>}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
@@ -193,7 +199,7 @@ export default function MiniDrawer() {
                       justifyContent: "center",
                     }}
                   >
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {<img width="30" height="30" src={bottomMenuIcons[index]}/>}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
