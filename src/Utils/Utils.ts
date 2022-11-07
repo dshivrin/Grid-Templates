@@ -26,6 +26,16 @@ export const drawLine = (
   ctxRef.stroke();
 };
 
+export const drawRectangle = (
+  ctxRef: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  x1: number,
+  y1: number
+) => {
+  ctxRef?.fillRect(x1, y1, width, height);
+};
+
 export const clearCanvas = (
   ctxRef: CanvasRenderingContext2D,
   width: number,
@@ -57,5 +67,3 @@ export const SaveAsPDF = (canvas: HTMLCanvasElement) => {
 export const PrintCanvas = (canvas: HTMLCanvasElement) => {
   printJS(canvas.toDataURL(), "image");
 };
-
-

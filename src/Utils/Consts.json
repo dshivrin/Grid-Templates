@@ -18,10 +18,10 @@
     },
     "BlackLetter": {
       "nibSize": 2.4,
-      "marginTop": 10,
+      "marginTop": 5,
       "bodySize": 5,
       "trailingSize": 2.5,
-      "lineSpacing": 10,
+      "lineSpacing": 5,
       "drawAccender": true,
       "drawDescender": true
     }
