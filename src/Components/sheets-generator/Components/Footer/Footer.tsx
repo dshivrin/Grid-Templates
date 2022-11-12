@@ -35,6 +35,9 @@ const Footer = () => {
   const trailingSize = useAppSelector(
     (state) => state.blackLetter.trailingSize
   );
+  const drawNibs = useAppSelector(
+    (state) => state.blackLetter.drawNibs
+  );
   const drawAccender = useAppSelector(
     (state) => state.blackLetter.drawAccender
   );
@@ -55,6 +58,7 @@ const Footer = () => {
           bodySize,
           trailingSize,
           lineSpacing,
+          drawNibs,
           drawAccender,
           drawDescender
         );
@@ -88,6 +92,7 @@ const Footer = () => {
           bodySize,
           trailingSize,
           lineSpacing,
+          drawNibs,
           drawAccender,
           drawDescender
         );

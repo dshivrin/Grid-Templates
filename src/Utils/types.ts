@@ -40,6 +40,7 @@ export type blackLetterState = {
   bodySize: number,
   trailingSize: number,//ascender + descender size
   lineSpacing: number,
+  drawNibs: boolean,
   drawAccender: boolean,
   drawDescender: boolean
 };

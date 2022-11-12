@@ -10,6 +10,7 @@ const initialState: blackLetterState = {
   bodySize: defaults.bodySize,
   trailingSize: defaults.trailingSize,
   lineSpacing: defaults.lineSpacing,
+  drawNibs: defaults.drawNibs,
   drawAccender: defaults.drawAccender,
   drawDescender: defaults.drawDescender,
 };
@@ -33,6 +34,9 @@ const blackLetterSlice = createSlice({
     onLineSpacingChanged(state, action: PayloadAction<number>) {
       state.lineSpacing = action.payload;
     },
+    onDrawNibsChanged(state, action: PayloadAction<boolean>) {
+      state.drawNibs = action.payload;
+    },
     onDrawAccenderChanged(state, action: PayloadAction<boolean>) {
       state.drawAccender = action.payload;
     },
@@ -48,6 +52,7 @@ export const {
   onBodySizeChanged,
   onTrailingSizeChanged,
   onLineSpacingChanged,
+  onDrawNibsChanged,
   onDrawAccenderChanged,
   onDrawDescenderChanged
 } = blackLetterSlice.actions;

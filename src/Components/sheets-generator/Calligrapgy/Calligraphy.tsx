@@ -61,6 +61,9 @@ const Calligraphy = () => {
   const trailingSize = useAppSelector(
     (state) => state.blackLetter.trailingSize
   );
+  const drawNibs = useAppSelector(
+    (state) => state.blackLetter.drawNibs
+  );
   const drawAccender = useAppSelector(
     (state) => state.blackLetter.drawAccender
   );
@@ -91,6 +94,7 @@ const Calligraphy = () => {
     bodySize,
     lineSpacing,
     trailingSize,
+    drawNibs,
     drawAccender,
     drawDescender,
   ]);
@@ -146,6 +150,7 @@ const Calligraphy = () => {
       trailingSize,
       lineWidth,
       lineSpacing,
+      drawNibs,
       drawAccender,
       drawDescender
     );

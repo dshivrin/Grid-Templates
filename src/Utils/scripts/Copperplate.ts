@@ -14,6 +14,7 @@ export const drawCopperplateGrid = (
   lineWidth: number,
   horizontalInterval: number,
   verticaleInterval: number,
+  
   drawHorizontal: boolean = false,
   drawVertical: boolean = true
 ) => {

@@ -5,6 +5,7 @@ import {
   onBodySizeChanged,
   onTrailingSizeChanged,
   onLineSpacingChanged,
+  onDrawNibsChanged,
   onDrawAccenderChanged,
   onDrawDescenderChanged,
 } from "state/slices/blackLetterSlice";
@@ -20,12 +21,20 @@ const BlackLetterControls = () => {
     (state) => state.blackLetter.trailingSize
   );
   const lineSpacing = useAppSelector((state) => state.blackLetter.lineSpacing);
+  const drawNibs = useAppSelector(
+    (state) => state.blackLetter.drawNibs
+  );
   const drawAccender = useAppSelector(
     (state) => state.blackLetter.drawAccender
   );
   const drawDescender = useAppSelector(
     (state) => state.blackLetter.drawDescender
   );
+
+  const handleDrawNibsChanged = (event: any) => {
+    const checked = Boolean(event.target.checked);
+    dispatch(onDrawNibsChanged(checked));
+  };
 
   const handleDrawAccenderChanged = (event: any) => {
     const checked = Boolean(event.target.checked);
@@ -108,18 +117,27 @@ const BlackLetterControls = () => {
           <label>Include Accender: </label>
           <input
             type="checkbox"
-            id="body-size"
+            id="include-accender"
             checked={drawAccender}
             onChange={handleDrawAccenderChanged}
           />{" "}
         </div>
         <div>
-          <label>Include Accender: </label>
+          <label>Include Descender: </label>
           <input
             type="checkbox"
-            id="body-size"
+            id="include-descender"
             checked={drawDescender}
             onChange={handleDrawDescenderChanged}
+          />{" "}
+        </div>
+        <div>
+          <label>Draw Nibs: </label>
+          <input
+            type="checkbox"
+            id="include-nibs"
+            checked={drawNibs}
+            onChange={handleDrawNibsChanged}
           />{" "}
         </div>
       </div>

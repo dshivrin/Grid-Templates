@@ -18,6 +18,7 @@ export const drawBlackletterGrid = (
   trailingSize: number, //ascender + descender
   lineWidth: number,
   lineSpacing: number,
+  drawNibs: boolean,
   drawAccender: boolean,
   drawDescender: boolean
 ) => {
@@ -25,7 +26,6 @@ export const drawBlackletterGrid = (
   setLineSmoothness(ctxRef, lineWidth);
   let x1 = 0;
   let y1 = marginTop * scaleDown;
-  let nibs = y1;
   /**
    * line height = asc + desc + main
    * //
@@ -40,11 +40,11 @@ export const drawBlackletterGrid = (
       nibSize,
       bodySize,
       trailingSize,
-      lineWidth,
+      drawNibs,
       drawAccender,
       drawDescender
     );
-    
+
     y1 = rowHeight + lineSpacing * scaleDown;
   }
 
@@ -60,6 +60,7 @@ export const prepareBlackLetterForPrinting = (
   bodySize: number,
   trailingSize: number,
   lineSpacing: number,
+  drawNibs: boolean,
   drawAccender: boolean,
   drawDescender: boolean
 ) => {
@@ -83,6 +84,7 @@ export const prepareBlackLetterForPrinting = (
     trailingSize,
     lineWidth,
     lineSpacing,
+    drawNibs,
     drawAccender,
     drawDescender
   );
@@ -101,42 +103,46 @@ const drawBlackletterRow = (
   nibSize: number,
   bodySize: number,
   trailingSize: number, //ascender + descender
-  lineWidth: number,
+  drawNibs: boolean,
   drawAccender: boolean,
   drawDescender: boolean
 ) => {
-
-let nibX = 0
-let nibY = y1;
+  let nibX = 0;
+  let nibY = y1;
   if (drawAccender) {
     //drawRectangle(ctxRef, nibSize, nibSize, x1, y1);
     drawLine(ctxRef, x1, y1, canvasWidth, y1, 1 / 3);
-    for(let i = 0; i < Math.ceil(trailingSize); i++){
-      drawRectangle(ctxRef, nibSize, nibSize, nibX, nibY);
-      nibY += nibSize;
-      nibX = i % 2 > 0 ? 0 : nibSize;
+    if (drawNibs) {
+      for (let i = 0; i < Math.ceil(trailingSize); i++) {
+        drawRectangle(ctxRef, nibSize, nibSize, nibX, nibY);
+        nibY += nibSize;
+        nibX = i % 2 > 0 ? 0 : nibSize;
+      }
     }
     y1 = y1 + nibSize * trailingSize;
   }
   //body
   drawLine(ctxRef, x1, y1, canvasWidth, y1, 1 / 3);
-  debugger;
-  for(let i = 0; i < Math.ceil(bodySize); i++){
-    drawRectangle(ctxRef, nibSize, nibSize, nibX, nibY);
-    nibY += nibSize;
-    nibX = i % 2 === 0 ? 0 : nibSize;
+  if (drawNibs) {
+    for (let i = 0; i < Math.ceil(bodySize); i++) {
+      drawRectangle(ctxRef, nibSize, nibSize, nibX, nibY);
+      nibY += nibSize;
+      nibX = i % 2 === 0 ? 0 : nibSize;
+    }
   }
   y1 = y1 + nibSize * bodySize;
   drawLine(ctxRef, x1, y1, canvasWidth, y1, 1 / 3);
-  
+
   y1 = y1 + nibSize * trailingSize;
   if (drawDescender) {
     drawLine(ctxRef, x1, y1, canvasWidth, y1, 1 / 3);
     //last one -1 iterations
-    for(let i = 1; i < Math.ceil(trailingSize); i++){
-      drawRectangle(ctxRef, nibSize, nibSize, nibX, nibY);
-      nibY += nibSize;
-      nibX = i % 2 === 0 ? 0 : nibSize;
+    if (drawNibs) {
+      for (let i = 1; i < Math.ceil(trailingSize); i++) {
+        drawRectangle(ctxRef, nibSize, nibSize, nibX, nibY);
+        nibY += nibSize;
+        nibX = i % 2 === 0 ? 0 : nibSize;
+      }
     }
   }
 
@@ -151,10 +157,7 @@ const drawNibs = (
   lineWidth: number,
   lineSpacing: number,
   canvasWidth: number,
-  canvasHeight: number,
+  canvasHeight: number
 ) => {
-  while (y1 + lineWidth + lineSpacing < canvasHeight){
-
-  }
-
+  while (y1 + lineWidth + lineSpacing < canvasHeight) {}
 };

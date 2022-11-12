@@ -22,6 +22,7 @@
       "bodySize": 5,
       "trailingSize": 2.5,
       "lineSpacing": 5,
+      "drawNibs": true,
       "drawAccender": true,
       "drawDescender": true
     }
