@@ -5,6 +5,7 @@ import {
   onDrawVertical,
   onHorizontalInterval,
   onverticaleInterval,
+  onVerticalAngle
 } from "state/slices/copperPlateSlice";
 import Footer from "../Footer/Footer";
 
@@ -62,12 +63,13 @@ const CopperPlateControls = () => {
             <input
               type="number"
               id="angle"
-              min="50"
+              min="-60"
               max="60"
               value={verticalAngle}
-              //onChange={(event) => {
-              //  setVerticalAngle(+event.target.value);
-              //}}
+              onChange={(event) => {
+                dispatch(onVerticalAngle(+event.target.value));
+               //setVerticalAngle(+event.target.value);
+              }}
               //disabled={!includeVerticalLines}
               disabled={true}
             />{" "}

@@ -34,6 +34,9 @@ const copperplateSlice = createSlice({
     onverticaleInterval(state, action: PayloadAction<number>) {
       state.verticaleInterval = action.payload;
     },
+    onVerticalAngle(state, action: PayloadAction<number>) {
+      state.angle = action.payload;
+    },
   },
 });
 
@@ -42,5 +45,6 @@ export const {
   onDrawVertical,
   onHorizontalInterval,
   onverticaleInterval,
+  onVerticalAngle
 } = copperplateSlice.actions;
 export default copperplateSlice.reducer;

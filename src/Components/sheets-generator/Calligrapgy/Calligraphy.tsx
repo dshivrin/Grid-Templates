@@ -89,6 +89,7 @@ const Calligraphy = () => {
     includeHorizontalLines,
     verticalInterval,
     horizontalInterval,
+    verticalAngle,
     //
     marginTop,
     bodySize,
@@ -121,8 +122,10 @@ const Calligraphy = () => {
       vscale = 1;
     }
 
-    horizontal = mm * horizontalInterval * hscale;
-    vertical = mm * verticalInterval * vscale;
+    // horizontal = mm * horizontalInterval * hscale;
+    // vertical = mm * verticalInterval * vscale;
+    horizontal = mm * horizontalInterval;
+    vertical = mm * verticalInterval;
 
     drawCopperplateGrid(
       ctxRef,

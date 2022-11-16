@@ -1,6 +1,11 @@
 import { jsPDF } from "jspdf";
 import printJS from "print-js";
 
+
+export const degreesToRadians = (degrees: number) => {
+  return degrees * (Math.PI / 180);
+};
+
 export const setLineSmoothness = (
   ctxRef: CanvasRenderingContext2D,
   lineWidth: number
@@ -8,6 +13,7 @@ export const setLineSmoothness = (
   ctxRef.lineCap = "round";
   ctxRef.lineJoin = "round";
   ctxRef.lineWidth = lineWidth;
+  //todo: add strokeStyle = color
   //ctxRef.translate(0.5, 0.5);
 };
 
@@ -19,7 +25,7 @@ export const drawLine = (
   y2: number,
   lineWidth: number
 ) => {
-  ctxRef.lineWidth = lineWidth;
+  ctxRef.lineWidth = lineWidth;//extract to pre-render method? 1/3 thinkness for display
   ctxRef.beginPath();
   ctxRef.moveTo(x1, y1);
   ctxRef.lineTo(x2, y2);
