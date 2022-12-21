@@ -4,19 +4,9 @@ import consts from "Utils/Consts.json";
 import { useAppSelector } from "state/hooks";
 import Canvas from "../Components/Canvas/Canvas";
 import BasicTabs from "../Components/Tabs/Tabs";
-
 import CopperPlateControls from "../Components/Control Panels/copperPlateControls";
 import BlackLetterControls from "../Components/Control Panels/blackLetterControls";
 import { drawBlackletterGrid } from "Utils/scripts/Blackletter";
-
-/*
-  TODO:
-  1. Add form validation for all inputs
-  2. Printing and exporting PDF in landscape mode 
-  7. Proper CSS, consider adding bootstrap before any changes
-  8. In copperPlate add punctuated lines in between to distinguish the main line and asc+desc, 
-    divide the page to sections of 5  
-*/
 
 //print is usually 300 dpi
 //A4 page size - 3508 x 2480 px (297 x 210 mm)
@@ -122,8 +112,6 @@ const Calligraphy = () => {
       vscale = 1;
     }
 
-    // horizontal = mm * horizontalInterval * hscale;
-    // vertical = mm * verticalInterval * vscale;
     horizontal = mm * horizontalInterval;
     vertical = mm * verticalInterval;
 

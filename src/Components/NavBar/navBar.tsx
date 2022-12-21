@@ -18,18 +18,16 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { AppBarProps } from "Utils/types";
 import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
-import Home from "Components/Home/home";
 import About from "Components/About/about";
 import Calligrapgy from "../sheets-generator/Calligrapgy/Calligraphy";
 import Shapes from "Components/sheets-generator/Shapes/Shapes";
 //icons
-import HomeIcon from "Media/home.png";
 import CalligraphyIcon from "Media/calligraphy.png";
 import ShapesIcon from "Media/shapes.png";
 import AboutIcon from "Media/about.png";
 
 const drawerWidth = 240;
-const TopMenusIcons = [HomeIcon , CalligraphyIcon, ShapesIcon]
+const TopMenusIcons = [CalligraphyIcon, ShapesIcon]
 
 const bottomMenuIcons = [AboutIcon]
  
@@ -146,7 +144,7 @@ export default function MiniDrawer() {
           </DrawerHeader>
           <Divider />
           <List>
-            {["Home", "Calligraphy Sheets", "Shapes"].map((text, index) => (
+            {["Calligraphy Sheets", "Shapes"].map((text, index) => (
               <ListItem
                 key={text}
                 component={Link}
@@ -210,8 +208,7 @@ export default function MiniDrawer() {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Calligrapgy />} />
             <Route path="/Calligraphy Sheets" element={<Calligrapgy />} />
             <Route path="/Shapes" element={<Shapes />} />
             <Route path="/about" element={<About />} />
