@@ -52,7 +52,6 @@ export default function BasicTabs(props: TabsProps) {
 
   return (
     <div className="controls-container">
-      <div className="inner-container">
         <Box sx={{ width: "100%" }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
@@ -74,7 +73,6 @@ export default function BasicTabs(props: TabsProps) {
             );
           })}
         </Box>
-      </div>
     </div>
   );
 }

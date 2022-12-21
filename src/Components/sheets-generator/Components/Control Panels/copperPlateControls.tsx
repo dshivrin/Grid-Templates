@@ -68,9 +68,7 @@ const CopperPlateControls = () => {
               value={verticalAngle}
               onChange={(event) => {
                 dispatch(onVerticalAngle(+event.target.value));
-               //setVerticalAngle(+event.target.value);
               }}
-              //disabled={!includeVerticalLines}
               disabled={true}
             />{" "}
             °
