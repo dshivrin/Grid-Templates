@@ -148,16 +148,3 @@ const drawBlackletterRow = (
 
   return y1;
 };
-
-const drawNibs = (
-  ctxRef: CanvasRenderingContext2D,
-  x1: number,
-  y1: number,
-  nibSize: number,
-  lineWidth: number,
-  lineSpacing: number,
-  canvasWidth: number,
-  canvasHeight: number
-) => {
-  while (y1 + lineWidth + lineSpacing < canvasHeight) {}
-};

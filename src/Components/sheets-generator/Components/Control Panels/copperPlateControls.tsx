@@ -1,11 +1,14 @@
 import { useAppDispatch, useAppSelector } from "state/hooks";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import PageControls from "./pageControls";
 import {
   onDrawHorizontal,
   onDrawVertical,
   onHorizontalInterval,
   onverticaleInterval,
-  onVerticalAngle
+  onVerticalAngle,
 } from "state/slices/copperPlateSlice";
 import Footer from "../Footer/Footer";
 
@@ -26,25 +29,34 @@ const CopperPlateControls = () => {
   const verticalAngle = useAppSelector((state) => state.copperplate.angle);
 
   return (
-    <div>
+    <Form>
       <PageControls />
-      <div>
-        <label>Vertical</label>
-        <div className="section vertical-controls">
-          <div>
-            <label>Include Vertical lines? </label>
-            <input
-              type="checkbox"
+      <div className="section vertical-controls">
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label>Vertical Lines</Form.Label>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Include Vertical lines
+          </Form.Label>
+          <Col sm="4">
+            <Form.Check
+              type="switch"
               id="incluideVertical"
               checked={includeVerticalLines}
               onChange={(event) => {
                 dispatch(onDrawVertical(event.target.checked));
               }}
             />
-          </div>
-          <div>
-            <label>Vertical spacing: </label>
-            <input
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Vertical spacing (mm)
+          </Form.Label>
+          <Col sm="4">
+            <Form.Control
               type="number"
               id="vertical-spacing"
               min="1"
@@ -55,12 +67,15 @@ const CopperPlateControls = () => {
                 dispatch(onverticaleInterval(+event.target.value));
               }}
               disabled={!includeVerticalLines}
-            />{" "}
-            mm
-          </div>
-          <div>
-            <label>Vertical angle: </label>
-            <input
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Vertical angle (°)
+          </Form.Label>
+          <Col sm="4">
+            <Form.Control
               type="number"
               id="angle"
               min="-60"
@@ -70,45 +85,51 @@ const CopperPlateControls = () => {
                 dispatch(onVerticalAngle(+event.target.value));
               }}
               disabled={true}
-            />{" "}
-            °
-          </div>
-        </div>
-        <label>Horizontal</label>
-        <div className="section horizontal-controls">
-          <div>
-            <div>
-              <label>Include Horizontal lines? </label>
-              <input
-                type="checkbox"
-                id="incluideHorizontal"
-                checked={includeHorizontalLines}
-                onChange={(event) => {
-                  dispatch(onDrawHorizontal(event.target.checked));
-                }}
-              />
-            </div>
-            <div>
-              <label>Horizontal spacing: </label>
-              <input
-                type="number"
-                id="horizontal-spacing"
-                min="1"
-                max="15"
-                step="0.1"
-                value={horizontalSpacing}
-                disabled={!includeHorizontalLines}
-                onChange={(event) => {
-                  dispatch(onHorizontalInterval(+event.target.value));
-                }}
-              />{" "}
-              mm
-            </div>
-          </div>
-        </div>
+            />
+          </Col>
+        </Form.Group>
       </div>
-      <Footer/>
-    </div>
+      <div className="section horizontal-controls">
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label>Horizontal Lines</Form.Label>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Include Vertical lines
+          </Form.Label>
+          <Col sm="4">
+            <Form.Check
+              type="switch"
+              id="incluideHorizontal"
+              checked={includeHorizontalLines}
+              onChange={(event) => {
+                dispatch(onDrawHorizontal(event.target.checked));
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Interval (mm)
+          </Form.Label>
+          <Col sm="4">
+            <Form.Control
+              type="number"
+              id="horizontal-spacing"
+              min="1"
+              max="15"
+              step="0.1"
+              value={horizontalSpacing}
+              disabled={!includeHorizontalLines}
+              onChange={(event) => {
+                dispatch(onHorizontalInterval(+event.target.value));
+              }}
+            />
+          </Col>
+        </Form.Group>
+      </div>
+      <Footer />
+    </Form>
   );
 };
 

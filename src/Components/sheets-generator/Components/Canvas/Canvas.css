@@ -1,3 +1,5 @@
+
+
 /* 
     Pallete:
     #F5DA78 <= canvas container BG color
@@ -28,17 +30,31 @@
     justify-content: flex-start;
     flex-direction: column;
     align-items: stretch; 
-    height: 100%; /*<= this works only because the main-container's has defined height*/
+    height: 111%; /*<= this works only because the main-container has defined height*/
     margin: 0 75px 0 75px;
 }
 
 .controls-container .section {
     margin: 10px;
     border: 1px solid #c0c0c0;
-    padding: 7px;
-    border-radius: 4px;
+    padding: 7px 15px;
+    border-radius: 0.375rem;
+    display: flex;
+    flex-direction: column;
 }
 
+.controls-container .section label{
+  align-self: flex-start;
+  margin-bottom: 3px;
+}
+
+.img-selected{
+  box-shadow: 0px 0px 7px #0d6efd;
+}
+
+.controls-container .section label.special{
+  margin: 0px !important;
+}
 /* sizing the canvas with CSS is messing up the calculations */
 canvas {
     border: 1px solid black;
@@ -110,3 +126,4 @@ canvas {
 [type=radio]:checked + img {
   outline: 2px solid #f00;
 }
+

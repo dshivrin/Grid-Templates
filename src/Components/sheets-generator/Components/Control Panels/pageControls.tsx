@@ -1,5 +1,9 @@
+import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "state/hooks";
-import { PageSize } from "Utils/types";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import { OnImageClickEvent, PageSize } from "Utils/types";
 import consts from "Utils/Consts.json";
 import landscapeLogo from "Media/landscape-mode.png";
 import portpaitLogo from "Media/portrait-mode.png";
@@ -17,15 +21,48 @@ const PageControls = () => {
   const lineWidth = useAppSelector((state) => state.canvas.lineWidth);
   const pageOrientation = useAppSelector(
     (state) => state.canvas.pageOrientation
-  ); //?
+  );
+
+  const portraitImageRef = useRef<HTMLImageElement>(null);
+  const landscapeImageRef = useRef<HTMLImageElement>(null);
+
+  const changeOrientation = (event: OnImageClickEvent) => {
+    //set selected on image
+    const value = event.currentTarget.attributes
+      .getNamedItem("data-value")
+      ?.value.toString();
+    if (value !== pageOrientation)
+      setSelectedOrientationImage(value || pageOrientation);
+
+    dispatch(onOrientationChanged(value));
+  };
+
+  const setSelectedOrientationImage = (value: string) => {
+    if (value === "p") {
+      portraitImageRef.current?.classList.add("img-selected");
+      landscapeImageRef.current?.classList.remove("img-selected");
+    } else {
+      portraitImageRef.current?.classList.remove("img-selected");
+      landscapeImageRef.current?.classList.add("img-selected");
+    }
+  };
+
+  useEffect(() => {
+    pageOrientation === "p"
+      ? portraitImageRef.current?.classList.toggle("img-selected")
+      : landscapeImageRef.current?.classList.toggle("img-selected");
+  }, []);
 
   return (
-    <div>
-      <label>Page</label>
-      <div className="section page-size-selector">
-        <div className="page-size">
-          <label>Page Size: </label>
-          <select
+    <div className="section page-size-selector">
+      <Form.Group as={Row} className="mb-1">
+        <Form.Label>Page</Form.Label>
+        <Form.Label column sm="7">
+          Page Size
+        </Form.Label>
+        <Col sm="4">
+          <Form.Select
+            aria-label="Select Page Size"
             value={pageSize}
             onChange={(event) => {
               dispatch(onPageSizeChanged(event.target.value));
@@ -38,11 +75,15 @@ const PageControls = () => {
                 </option>
               );
             })}
-          </select>
-        </div>
-        <div className="line-width">
-          <label>Line Width: </label>
-          <input
+          </Form.Select>
+        </Col>
+      </Form.Group>
+      <Form.Group as={Row} className="mb-1">
+        <Form.Label column sm="7">
+          Line Width
+        </Form.Label>
+        <Col sm="4">
+          <Form.Control
             type="number"
             min="1"
             max="5"
@@ -51,36 +92,54 @@ const PageControls = () => {
             onChange={(event) => {
               dispatch(onLineWidthChange(+event.target.value));
             }}
-          />{" "}
-          px
-        </div>
-        <div className="page-orientation">
-          <label>
-            <input
-              type="radio"
-              name="orientation"
-              value="p"
-              checked={pageOrientation === "p"}
-              onChange={(event) =>
-                dispatch(onOrientationChanged(event.target.value))
-              }
-            />
-            <img src={portpaitLogo} alt="portrait mode" />
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="orientation"
-              value="l"
-              checked={pageOrientation === "l"}
-              onChange={(event) =>
-                dispatch(onOrientationChanged(event.target.value))
-              }
-            />
-            <img src={landscapeLogo} alt="portrait mode" />
-          </label>
-        </div>
-      </div>
+          />
+        </Col>
+      </Form.Group>
+      <Form.Group as={Row} className="mb-1">
+        <Form.Label column sm="7">
+          Orientation
+        </Form.Label>
+        <Form.Label classname="special" column sm="2">
+          <img
+            data-value="l"
+            onClick={(event: OnImageClickEvent) => changeOrientation(event)}
+            src={landscapeLogo}
+            alt="landscape mode"
+            ref={landscapeImageRef}
+          />
+          <Form.Check
+            inline
+            type="radio"
+            id="orientation"
+            name="orientation"
+            value="l"
+            checked={pageOrientation === "l"}
+            onChange={(event) =>
+              dispatch(onOrientationChanged(event.target.value))
+            }
+          />
+        </Form.Label>
+        <Form.Label classname="special" column sm="2">
+          <img
+            data-value="p"
+            onClick={(event: OnImageClickEvent) => changeOrientation(event)}
+            src={portpaitLogo}
+            alt="portrait mode"
+            ref={portraitImageRef}
+          />
+          <Form.Check
+            inline
+            type="radio"
+            id="orientation"
+            name="orientation"
+            value="p"
+            checked={pageOrientation === "p"}
+            onChange={(event) =>
+              dispatch(onOrientationChanged(event.target.value))
+            }
+          />
+        </Form.Label>
+      </Form.Group>
     </div>
   );
 };

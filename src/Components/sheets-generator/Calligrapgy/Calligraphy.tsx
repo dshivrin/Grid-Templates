@@ -51,9 +51,7 @@ const Calligraphy = () => {
   const trailingSize = useAppSelector(
     (state) => state.blackLetter.trailingSize
   );
-  const drawNibs = useAppSelector(
-    (state) => state.blackLetter.drawNibs
-  );
+  const drawNibs = useAppSelector((state) => state.blackLetter.drawNibs);
   const drawAccender = useAppSelector(
     (state) => state.blackLetter.drawAccender
   );
@@ -103,17 +101,8 @@ const Calligraphy = () => {
 
   //private methods
   const drawCopperPlateTemplate = (ctxRef: CanvasRenderingContext2D) => {
-    let hscale, vscale, horizontal, vertical: number;
-    if (height > width) {
-      hscale = width / height;
-      vscale = height / width;
-    } else {
-      hscale = height / width;
-      vscale = 1;
-    }
-
-    horizontal = mm * horizontalInterval;
-    vertical = mm * verticalInterval;
+    let horizontal = mm * horizontalInterval;
+    let vertical = mm * verticalInterval;
 
     drawCopperplateGrid(
       ctxRef,

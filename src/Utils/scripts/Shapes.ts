@@ -1,5 +1,4 @@
-import { clearCanvas, drawLine, setLineSmoothness } from "../Utils";
-import consts from "../Consts.json";
+import { clearCanvas, setLineSmoothness } from "../Utils";
 
 export const DrawFibonachiSpiral = (
   ctxRef: CanvasRenderingContext2D,
@@ -20,14 +19,14 @@ export const DrawFibonachiSpiral = (
   var dir = 0; //starts north. North=0, West=1, South=2, East=3
   var ZOOM = 3;
   while (k < 150) {
-    if (dir == 0) {
+    if (dir === 0) {
       //North
       x = x - i * ZOOM;
       y = y - k * ZOOM;
       ctxRef.beginPath();
       ctxRef.arc(x, y + k * ZOOM, k * ZOOM, 0, Math.PI * 1.5, true);
       ctxRef.stroke();
-    } else if (dir == 1) {
+    } else if (dir === 1) {
       //West
       x = x - k * ZOOM;
       //y = y;
@@ -41,14 +40,14 @@ export const DrawFibonachiSpiral = (
         true
       );
       ctxRef.stroke();
-    } else if (dir == 2) {
+    } else if (dir === 2) {
       //South
       //x = x;
       y = y + j * ZOOM;
       ctxRef.beginPath();
       ctxRef.arc(x + k * ZOOM, y, k * ZOOM, Math.PI, Math.PI / 2, true);
       ctxRef.stroke();
-    } else if (dir == 3) {
+    } else if (dir === 3) {
       //East
       x = x + j * ZOOM;
       y = y - i * ZOOM;

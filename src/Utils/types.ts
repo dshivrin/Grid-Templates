@@ -1,5 +1,10 @@
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 
+export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
+export type TextareaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
+export type SelectChangeEvent = React.ChangeEvent<HTMLSelectElement>;
+export type OnImageClickEvent = React.SyntheticEvent<HTMLImageElement>;
+
 export type CanvasProps = {
   canvasRef: React.RefObject<HTMLCanvasElement>;
 };

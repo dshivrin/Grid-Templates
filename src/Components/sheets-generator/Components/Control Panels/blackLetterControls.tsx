@@ -1,4 +1,9 @@
 import { useAppDispatch, useAppSelector } from "state/hooks";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Footer from "../Footer/Footer";
+import PageControls from "./pageControls";
 import {
   onNibSizeChanged,
   onMarginTopChanged,
@@ -9,8 +14,6 @@ import {
   onDrawAccenderChanged,
   onDrawDescenderChanged,
 } from "state/slices/blackLetterSlice";
-import Footer from "../Footer/Footer";
-import PageControls from "./pageControls";
 
 const BlackLetterControls = () => {
   const dispatch = useAppDispatch();
@@ -21,9 +24,7 @@ const BlackLetterControls = () => {
     (state) => state.blackLetter.trailingSize
   );
   const lineSpacing = useAppSelector((state) => state.blackLetter.lineSpacing);
-  const drawNibs = useAppSelector(
-    (state) => state.blackLetter.drawNibs
-  );
+  const drawNibs = useAppSelector((state) => state.blackLetter.drawNibs);
   const drawAccender = useAppSelector(
     (state) => state.blackLetter.drawAccender
   );
@@ -47,102 +48,133 @@ const BlackLetterControls = () => {
   };
 
   return (
-    <div>
+    <Form>
       <PageControls />
       <div className="section vertical-controls">
-        <div>
-          <label>Nib Size: </label>
-          <input
-            type="number"
-            id="nib-size"
-            min="1"
-            max="10"
-            step="0.1"
-            value={nibSize}
-            onChange={(event) => {
-              dispatch(onNibSizeChanged(+event.target.value));
-            }}
-          />{" "}
-          mm
-        </div>
-        <div>
-          <label>Margin Top: </label>
-          <input
-            type="number"
-            id="margin-top"
-            step="0.1"
-            value={marginTop}
-            onChange={(event) => {
-              dispatch(onMarginTopChanged(+event.target.value));
-            }}
-          />{" "}
-        </div>
-        <div>
-          <label>Body Size: </label>
-          <input
-            type="number"
-            id="body-size"
-            step="0.1"
-            value={bodySize}
-            onChange={(event) => {
-              dispatch(onBodySizeChanged(+event.target.value));
-            }}
-          />{" "}
-        </div>
-        <div>
-          <label>Assender / Descender size: </label>
-          <input
-            type="number"
-            id="body-size"
-            step="0.1"
-            value={trailingSize}
-            onChange={(event) => {
-              dispatch(onTrailingSizeChanged(+event.target.value));
-            }}
-          />{" "}
-        </div>
-        <div>
-          <label>Line Spacing: </label>
-          <input
-            type="number"
-            id="body-size"
-            step="0.1"
-            value={lineSpacing}
-            onChange={(event) => {
-              dispatch(onLineSpacingChanged(+event.target.value));
-            }}
-          />{" "}
-        </div>
-        <div>
-          <label>Include Accender: </label>
-          <input
-            type="checkbox"
-            id="include-accender"
-            checked={drawAccender}
-            onChange={handleDrawAccenderChanged}
-          />{" "}
-        </div>
-        <div>
-          <label>Include Descender: </label>
-          <input
-            type="checkbox"
-            id="include-descender"
-            checked={drawDescender}
-            onChange={handleDrawDescenderChanged}
-          />{" "}
-        </div>
-        <div>
-          <label>Draw Nibs: </label>
-          <input
-            type="checkbox"
-            id="include-nibs"
-            checked={drawNibs}
-            onChange={handleDrawNibsChanged}
-          />{" "}
-        </div>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Nib Size
+          </Form.Label>
+          <Col sm="4">
+            <Form.Control
+              type="number"
+              id="nib-size"
+              min="1"
+              max="10"
+              step="0.1"
+              value={nibSize}
+              onChange={(event) => {
+                dispatch(onNibSizeChanged(+event.target.value));
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Margin Top
+          </Form.Label>
+          <Col sm="4">
+            <Form.Control
+              type="number"
+              id="margin-top"
+              step="0.1"
+              value={marginTop}
+              onChange={(event) => {
+                dispatch(onMarginTopChanged(+event.target.value));
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Body Size
+          </Form.Label>
+          <Col sm="4">
+            <Form.Control
+              type="number"
+              id="body-size"
+              step="0.1"
+              value={bodySize}
+              onChange={(event) => {
+                dispatch(onBodySizeChanged(+event.target.value));
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Asc / Desc size
+          </Form.Label>
+          <Col sm="4">
+            <Form.Control
+              type="number"
+              id="body-size"
+              step="0.1"
+              value={trailingSize}
+              onChange={(event) => {
+                dispatch(onTrailingSizeChanged(+event.target.value));
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Line Spacing
+          </Form.Label>
+          <Col sm="4">
+            <Form.Control
+              type="number"
+              id="body-size"
+              step="0.1"
+              value={lineSpacing}
+              onChange={(event) => {
+                dispatch(onLineSpacingChanged(+event.target.value));
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Include Ascender
+          </Form.Label>
+          <Col sm="4">
+            <Form.Check
+              type="switch"
+              id="include-accender"
+              checked={drawAccender}
+              onChange={handleDrawAccenderChanged}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Include Descender
+          </Form.Label>
+          <Col sm="4">
+            <Form.Check
+              type="switch"
+              id="include-descender"
+              checked={drawDescender}
+              onChange={handleDrawDescenderChanged}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-1">
+          <Form.Label column sm="7">
+            Draw Nibs
+          </Form.Label>
+          <Col sm="4">
+            <Form.Check
+              type="switch"
+              id="include-nibs"
+              checked={drawNibs}
+              onChange={handleDrawNibsChanged}
+            />
+          </Col>
+        </Form.Group>
       </div>
       <Footer />
-    </div>
+    </Form>
   );
 };
 
