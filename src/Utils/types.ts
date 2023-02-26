@@ -1,5 +1,5 @@
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-
+//event types
 export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 export type TextareaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
 export type SelectChangeEvent = React.ChangeEvent<HTMLSelectElement>;
@@ -16,8 +16,6 @@ export type TabsProps = {
 
 export type pageSizes = "A4" | "A5" | "A6";
 export type templateType = "Pointed Nib" | "Broad Nib";
-export type pointedTemplateTypes = templateType | "CopperPlate" | "Modern";
-export type broadTemplateTypes = templateType ;
 
 export type canvasState = {
   width: number;

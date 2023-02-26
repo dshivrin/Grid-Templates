@@ -110,7 +110,6 @@ const drawBlackletterRow = (
   let nibX = 0;
   let nibY = y1;
   if (drawAccender) {
-    //drawRectangle(ctxRef, nibSize, nibSize, x1, y1);
     drawLine(ctxRef, x1, y1, canvasWidth, y1, 1 / 3);
     if (drawNibs) {
       for (let i = 0; i < Math.ceil(trailingSize); i++) {

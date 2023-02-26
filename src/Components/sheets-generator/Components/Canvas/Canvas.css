@@ -55,6 +55,18 @@
 .controls-container .section label.special{
   margin: 0px !important;
 }
+
+.form-switch{
+   padding-top: 8px;
+}
+
+#orientation{
+  padding: 0;
+  margin: 0;
+  height: 0;
+  width: 0;
+  border: none;
+}
 /* sizing the canvas with CSS is messing up the calculations */
 canvas {
     border: 1px solid black;
