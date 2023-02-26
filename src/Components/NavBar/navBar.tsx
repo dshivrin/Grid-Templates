@@ -144,7 +144,7 @@ export default function MiniDrawer() {
           </DrawerHeader>
           <Divider />
           <List>
-            {["Calligraphy Sheets", "Shapes"].map((text, index) => (
+            {["Calligraphy Sheets"].map((text, index) => (
               <ListItem
                 key={text}
                 component={Link}
