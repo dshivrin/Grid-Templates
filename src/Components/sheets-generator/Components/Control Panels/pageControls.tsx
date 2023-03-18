@@ -99,7 +99,7 @@ const PageControls = () => {
         <Form.Label column sm="7">
           Orientation
         </Form.Label>
-        <Form.Label classname="special" column sm="2">
+        <Form.Label className="special" column sm="2">
           <img
             data-value="l"
             onClick={(event: OnImageClickEvent) => changeOrientation(event)}
@@ -119,7 +119,7 @@ const PageControls = () => {
             }
           />
         </Form.Label>
-        <Form.Label classname="special" column sm="2">
+        <Form.Label className="special" column sm="2">
           <img
             data-value="p"
             onClick={(event: OnImageClickEvent) => changeOrientation(event)}
