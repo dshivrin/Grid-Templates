@@ -109,13 +109,30 @@ const drawBlackletterRow = (
 ) => {
   let nibX = 0;
   let nibY = y1;
+
+  //This is a fix for a behaviour that occurs when the accender is not drawn,
+  //so one nib in the body is misplaced
+  const setNibXValue = (part: string, iteration: number): number => {
+    switch (part) {
+      case "accender":
+        return iteration % 2 > 0 ? 0 : nibSize;
+      case "body":
+      case "descender":
+        if (drawAccender) return iteration % 2 === 0 ? 0 : nibSize;
+        else return iteration % 2 !== 0 ? 0 : nibSize;
+       default:
+        return iteration % 2 > 0 ? 0 : nibSize;
+    }
+  };
+
   if (drawAccender) {
     drawLine(ctxRef, x1, y1, canvasWidth, y1, 1 / 3);
     if (drawNibs) {
-      for (let i = 0; i < Math.ceil(trailingSize); i++) {
+      const test = Math.ceil(trailingSize);
+      for (let i = 0; i < test; i++) {
         drawRectangle(ctxRef, nibSize, nibSize, nibX, nibY);
         nibY += nibSize;
-        nibX = i % 2 > 0 ? 0 : nibSize;
+        nibX = setNibXValue("accender", i);
       }
     }
     y1 = y1 + nibSize * trailingSize;
@@ -126,7 +143,7 @@ const drawBlackletterRow = (
     for (let i = 0; i < Math.ceil(bodySize); i++) {
       drawRectangle(ctxRef, nibSize, nibSize, nibX, nibY);
       nibY += nibSize;
-      nibX = i % 2 === 0 ? 0 : nibSize;
+      nibX = setNibXValue("body", i);
     }
   }
   y1 = y1 + nibSize * bodySize;
@@ -140,7 +157,7 @@ const drawBlackletterRow = (
       for (let i = 1; i < Math.ceil(trailingSize); i++) {
         drawRectangle(ctxRef, nibSize, nibSize, nibX, nibY);
         nibY += nibSize;
-        nibX = i % 2 === 0 ? 0 : nibSize;
+        nibX = setNibXValue("descender", i);
       }
     }
   }
