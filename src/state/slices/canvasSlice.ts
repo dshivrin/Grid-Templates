@@ -49,7 +49,7 @@ const canvasSlice = createSlice({
 
 const setByPageorientation = (
   state: any,
-  orientation: string,
+  orientation: string | undefined,
   pageSize: any
 ) => {
   switch (orientation) {

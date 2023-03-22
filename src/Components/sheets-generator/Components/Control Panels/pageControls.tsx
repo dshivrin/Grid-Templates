@@ -37,7 +37,7 @@ const PageControls = () => {
     dispatch(onOrientationChanged(value));
   };
 
-  const setSelectedOrientationImage = (value: string) => {
+  const setSelectedOrientationImage = (value: string | undefined) => {
     if (value === "p") {
       portraitImageRef.current?.classList.add("img-selected");
       landscapeImageRef.current?.classList.remove("img-selected");

@@ -21,7 +21,7 @@ export type canvasState = {
   width: number;
   height: number;
   pageSize: pageSizes;
-  pageOrientation: string;
+  pageOrientation: string | undefined;
   lineWidth: number;
   template: templateType;
 };
