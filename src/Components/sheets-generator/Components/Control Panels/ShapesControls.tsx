@@ -1,4 +1,3 @@
-import { useAppDispatch, useAppSelector } from "state/hooks";
 import PageControls from "./pageControls";
 import Footer from "../Footer/Footer";
 

@@ -166,7 +166,7 @@ export default function MiniDrawer() {
                       justifyContent: "center",
                     }}
                   >
-                    {<img key={`${text}-${index}`} width="30" height="30" src={TopMenusIcons[index]}/>}
+                    {<img key={`${text}-${index}`} width="30" height="30" src={TopMenusIcons[index]} alt={`${text}-icon`}/>}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
@@ -197,7 +197,7 @@ export default function MiniDrawer() {
                       justifyContent: "center",
                     }}
                   >
-                    {<img key={`${text}-${index}`} width="30" height="30" src={bottomMenuIcons[index]}/>}
+                    {<img key={`${text}-${index}`} width="30" height="30" src={bottomMenuIcons[index]} alt={`${text}-icon`}/>}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>

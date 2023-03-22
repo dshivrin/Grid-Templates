@@ -16,6 +16,7 @@ const About = () => {
               href="https://github.com/dshivrin/Grid-Templates"
               title="github page"
               target="_blank"
+              rel="noreferrer"
             >
               here
             </a>
@@ -48,6 +49,7 @@ const About = () => {
             href="https://www.flaticon.com/authors/freepik"
             title="flaticon.com"
             target="_blank"
+            rel="noreferrer"
           >
             flaticon.com
           </a>
@@ -56,6 +58,7 @@ const About = () => {
             href="https://www.facebook.com/Freepik"
             title="Freepik Facebook page"
             target="_blank"
+            rel="noreferrer"
           >
             Facebook page
           </a>
