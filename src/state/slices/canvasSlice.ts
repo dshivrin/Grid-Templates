@@ -29,7 +29,8 @@ const canvasSlice = createSlice({
       state.pageSize = selectedSize as pageSizes;
       setByPageorientation(state, state.pageOrientation, selectedPage);
     },
-    onOrientationChanged(state, action: PayloadAction<string>) {
+    onOrientationChanged(state, action: PayloadAction<string | undefined>) {
+      if(!action) return;
       const orientation = action.payload;
       const selectedPage = consts.pageSizes.find(
         (p) => p.size === state.pageSize
