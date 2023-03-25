@@ -6,19 +6,12 @@ The purpose of this project is to generate sheets for calligraphy to be printed 
 
 Known bugs:
 
-* Landscape mode printing is inaccurate
-* Scale is not accurate, between the display canvas and the printing one.
-
-
-Upcoming:
-
-* Blackletter (Gotic) sheets
-* punctuated lines above and below the header and the baseline
+* Chrome on Mac doesn't draw the Copperplate canvas accuratley.
+* I'm using <a href="https://printjs.crabbly.com/">PrintJS library</a> and as a result they add additional info to the printed page, for optimal results its better to download and  print the PDF file.
+* Chrome on Mac printing using <a href="https://printjs.crabbly.com/">PrintJS library</a> results in a 2 page print instead of one.
 
 
 ![20220919_114758](https://user-images.githubusercontent.com/17846404/190982935-bb4f321d-553c-48de-a4b2-6608d2c6794c.jpg)
-
-
 
 
 
