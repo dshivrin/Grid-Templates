@@ -26,11 +26,7 @@ export const drawBlackletterGrid = (
   setLineSmoothness(ctxRef, lineWidth);
   let x1 = 0;
   let y1 = marginTop * scaleDown;
-  /**
-   * line height = asc + desc + main
-   * //
-   * (canvasHeight - marginTop) / (asc + main + desc + spacing)
-   */
+  
   while (y1 + lineWidth + lineSpacing < canvasHeight) {
     let rowHeight = drawBlackletterRow(
       ctxRef,
@@ -48,7 +44,6 @@ export const drawBlackletterGrid = (
     y1 = rowHeight + lineSpacing * scaleDown;
   }
 
-  //if
 };
 
 export const prepareBlackLetterForPrinting = (
@@ -83,7 +78,7 @@ export const prepareBlackLetterForPrinting = (
     bodySize,
     trailingSize,
     lineWidth,
-    lineSpacing,
+    lineSpacing * 5,
     drawNibs,
     drawAccender,
     drawDescender
