@@ -48,10 +48,8 @@ const PageControls = () => {
   };
 
   useEffect(() => {
-    pageOrientation === "p"
-      ? portraitImageRef.current?.classList.toggle("img-selected")
-      : landscapeImageRef.current?.classList.toggle("img-selected");
-  }, []);
+    setSelectedOrientationImage(pageOrientation);
+  }, [pageOrientation]);
 
   return (
     <div className="section page-size-selector">

@@ -1,13 +1,15 @@
 import { clearCanvas, setLineSmoothness } from "../Utils";
 
 export const DrawFibonachiSpiral = (
-  ctxRef: CanvasRenderingContext2D,
+  ctxRef: CanvasRenderingContext2D | null,
 //   x1: number,
 //   y1: number,
   width: number,
   height: number,
   lineWidth: number
 ) => {
+
+  if(!ctxRef) return;
   clearCanvas(ctxRef, width, height);
   setLineSmoothness(ctxRef, lineWidth);
 

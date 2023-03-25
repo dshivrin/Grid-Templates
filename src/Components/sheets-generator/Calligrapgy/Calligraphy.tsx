@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { drawCopperplateGrid } from "Utils/scripts/Copperplate";
 import consts from "Utils/Consts.json";
 import { useAppSelector } from "state/hooks";
@@ -59,14 +59,60 @@ const Calligraphy = () => {
     (state) => state.blackLetter.drawDescender
   );
 
-  //canvas
-  const displayCanvasElement = useRef<HTMLCanvasElement>(null);
-  let ctxRef = null;
+
+  //See https://github.com/DefinitelyTyped/DefinitelyTyped/issues/35572
+  const displayCanvasElement = useRef<HTMLCanvasElement>() as RefObject<HTMLCanvasElement>;
 
   useEffect(() => {
-    ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
-    if (!ctxRef) return;
+    let ctxRef = displayCanvasElement.current!.getContext("2d"); // forced (!) due to some strange useRef behaviour with useEffect ¯\_(ツ)_/¯
 
+    const drawCopperPlateTemplate = (ctxRef: CanvasRenderingContext2D ) => {
+      let horizontal = mm * horizontalInterval;
+      let vertical = mm * verticalInterval;
+  
+      drawCopperplateGrid(
+        ctxRef,
+        0,
+        mm / scaleDown,
+        verticalAngle,
+        width / scaleDown,
+        height / scaleDown,
+        lineWidth / scaleDown,
+        horizontal,
+        vertical,
+        includeHorizontalLines,
+        includeVerticalLines
+      );
+    };
+  
+    const drawBlackLetterTemplate = (ctxRef: CanvasRenderingContext2D) => {
+      drawBlackletterGrid(
+        ctxRef,
+        nibSize * 2.5, //scale issue, same in print
+        width / scaleDown,
+        height / scaleDown,
+        marginTop,
+        bodySize,
+        trailingSize,
+        lineWidth,
+        lineSpacing,
+        drawNibs,
+        drawAccender,
+        drawDescender
+      );
+    };
+
+    const init = (ctxRef: CanvasRenderingContext2D | null) => {
+      if(!ctxRef) return;
+      switch (templateType) {
+        case "Broad Nib":
+          drawBlackLetterTemplate(ctxRef);
+          break;
+        case "Pointed Nib":
+          drawCopperPlateTemplate(ctxRef);
+          break;
+      }
+    };
     init(ctxRef);
   }, [
     templateType,
@@ -78,6 +124,11 @@ const Calligraphy = () => {
     verticalInterval,
     horizontalInterval,
     verticalAngle,
+    height,
+    width,
+    mm, 
+    nibSize, 
+    scaleDown,
     //
     marginTop,
     bodySize,
@@ -88,53 +139,10 @@ const Calligraphy = () => {
     drawDescender,
   ]);
 
-  const init = (ctxRef: CanvasRenderingContext2D) => {
-    switch (templateType) {
-      case "Broad Nib":
-        drawBlackLetterTemplate(ctxRef);
-        break;
-      case "Pointed Nib":
-        drawCopperPlateTemplate(ctxRef);
-        break;
-    }
-  };
+
 
   //private methods
-  const drawCopperPlateTemplate = (ctxRef: CanvasRenderingContext2D) => {
-    let horizontal = mm * horizontalInterval;
-    let vertical = mm * verticalInterval;
 
-    drawCopperplateGrid(
-      ctxRef,
-      0,
-      mm / scaleDown,
-      verticalAngle,
-      width / scaleDown,
-      height / scaleDown,
-      lineWidth / scaleDown,
-      horizontal,
-      vertical,
-      includeHorizontalLines,
-      includeVerticalLines
-    );
-  };
-
-  const drawBlackLetterTemplate = (ctxRef: CanvasRenderingContext2D) => {
-    drawBlackletterGrid(
-      ctxRef,
-      nibSize * 2.5, //scale issue, same in print
-      width / scaleDown,
-      height / scaleDown,
-      marginTop,
-      bodySize,
-      trailingSize,
-      lineWidth,
-      lineSpacing,
-      drawNibs,
-      drawAccender,
-      drawDescender
-    );
-  };
 
   const tabs = {
     "Pointed Nib": <CopperPlateControls />,
