@@ -59,7 +59,6 @@ const Calligraphy = () => {
     (state) => state.blackLetter.drawDescender
   );
 
-
   //See https://github.com/DefinitelyTyped/DefinitelyTyped/issues/35572
   const displayCanvasElement = useRef<HTMLCanvasElement>() as RefObject<HTMLCanvasElement>;
 
@@ -138,11 +137,6 @@ const Calligraphy = () => {
     drawAccender,
     drawDescender,
   ]);
-
-
-
-  //private methods
-
 
   const tabs = {
     "Pointed Nib": <CopperPlateControls />,

@@ -142,7 +142,7 @@ export const prepareCopperPlateForPrinting = (
   }
 
   horizontal = mm * horizontalInterval * hscale * scaleDown;
-  vertical = mm * verticalInterval * vscale * scaleDown;
+  vertical = mm * verticalInterval / vscale * scaleDown;
 
   drawCopperplateGrid(
     pctx,
